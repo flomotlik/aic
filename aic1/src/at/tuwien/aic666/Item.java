@@ -14,7 +14,7 @@ class Item {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(final Order order) {
         this.order = order;
     }
 
@@ -22,7 +22,7 @@ class Item {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(final String productId) {
         this.productId = productId;
     }
 
@@ -30,7 +30,7 @@ class Item {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(final int quantity) {
         this.quantity = quantity;
     }
 

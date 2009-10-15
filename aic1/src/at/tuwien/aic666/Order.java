@@ -11,7 +11,7 @@ public class Order {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -19,7 +19,7 @@ public class Order {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(final Date orderDate) {
         this.orderDate = orderDate;
     }
 }
