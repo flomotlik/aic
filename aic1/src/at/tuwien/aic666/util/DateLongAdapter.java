@@ -16,13 +16,13 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class DateLongAdapter extends XmlAdapter<Long, Date> {
 
     @Override
-    public Date unmarshal(final Long v) {
-        return new Date(v);
+    public Date unmarshal(final Long timemillis) {
+        return new Date(timemillis);
     }
 
     @Override
-    public Long marshal(final Date v) {
-        return v.getTime();
+    public Long marshal(final Date date) {
+        return date.getTime();
     }
 
    

@@ -1,5 +1,6 @@
 package at.tuwien.aic666.datamodel;
 
+import at.tuwien.aic666.util.DateLongAdapter;
 import java.util.Collection;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="order")
@@ -17,6 +19,7 @@ public class Order {
     @XmlAttribute(name="id")
     private String id;
 
+    @XmlJavaTypeAdapter(DateLongAdapter.class)
     private Date orderDate;
 
     private Customer customer;

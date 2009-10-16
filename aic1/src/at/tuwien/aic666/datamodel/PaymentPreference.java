@@ -7,12 +7,14 @@ package at.tuwien.aic666.datamodel;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author peter
  */
 @XmlEnum
+@XmlRootElement(name="payment-preference")
 public enum PaymentPreference {
 
     /**
