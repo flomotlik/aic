@@ -2,3 +2,5 @@ nbproject
 bin
 manifest.mf
 nbbuild.xml
+build
+dist

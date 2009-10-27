@@ -30,6 +30,12 @@ import org.junit.Test;
  * @author peter
  */
 public class JAXBAnnotationsTest {
+    public static final String BUILDADDRESSXML = "build/address.xml";
+    public static final String BUILDCUSTOMERXML = "build/customer.xml";
+    public static final String BUILDITEM1XML = "build/item1.xml";
+    public static final String BUILDORDERXML = "build/order.xml";
+    public static final String BUILDPREFXML = "build/pref.xml";
+    private static final String BUILDITEM2XML = "build/item2.xml";
 
     private Item item1;
     private Item item2;
@@ -56,12 +62,12 @@ public class JAXBAnnotationsTest {
             final JAXBContext context = JAXBContext.newInstance(Item.class, Order.class, Customer.class, Address.class, PaymentPreference.class);
             final Marshaller marshaller = context.createMarshaller();
 
-            marshaller.marshal(this.customer, new File("test/resources/customer.xml"));
-            marshaller.marshal(this.address, new File("test/resources/address.xml"));
-            marshaller.marshal(this.pref, new File("test/resources/pref.xml"));
-            marshaller.marshal(this.order, new File("test/resources/order.xml"));
-            marshaller.marshal(this.item1, new File("test/resources/item1.xml"));
-            marshaller.marshal(this.item2, new File("test/resources/item2.xml"));
+            marshaller.marshal(this.customer, new File(BUILDCUSTOMERXML));
+            marshaller.marshal(this.address, new File(BUILDADDRESSXML));
+            marshaller.marshal(this.pref, new File(BUILDPREFXML));
+            marshaller.marshal(this.order, new File(BUILDORDERXML));
+            marshaller.marshal(this.item1, new File(BUILDITEM1XML));
+            marshaller.marshal(this.item2, new File(BUILDITEM2XML));
 
         } catch (final JAXBException ex) {
             Logger.getLogger(JAXBAnnotationsTest.class.getName()).log(Level.SEVERE, "An error occurred", ex);
@@ -77,12 +83,12 @@ public class JAXBAnnotationsTest {
             unmarshaller.setAdapter(new DateLongAdapter());
 
 
-            final Customer cust = (Customer) unmarshaller.unmarshal(new File("test/resources/customer.xml"));
-            final Address adr = (Address) unmarshaller.unmarshal(new File("test/resources/address.xml"));
-            final Order ord = (Order) unmarshaller.unmarshal(new File("test/resources/order.xml"));
-            final Item itm1 = (Item) unmarshaller.unmarshal(new File("test/resources/item1.xml"));
-            final Item itm2 = (Item) unmarshaller.unmarshal(new File("test/resources/item2.xml"));
-            final PaymentPreference prf = (PaymentPreference) unmarshaller.unmarshal(new File("test/resources/pref.xml"));
+            final Customer cust = (Customer) unmarshaller.unmarshal(new File(BUILDCUSTOMERXML));
+            final Address adr = (Address) unmarshaller.unmarshal(new File(BUILDADDRESSXML));
+            final Order ord = (Order) unmarshaller.unmarshal(new File(BUILDORDERXML));
+            final Item itm1 = (Item) unmarshaller.unmarshal(new File(BUILDITEM1XML));
+            final Item itm2 = (Item) unmarshaller.unmarshal(new File(BUILDITEM2XML));
+            final PaymentPreference prf = (PaymentPreference) unmarshaller.unmarshal(new File(BUILDPREFXML));
 
             itm1.afterUnmarshal(unmarshaller, ord);
             itm2.afterUnmarshal(unmarshaller, ord);
