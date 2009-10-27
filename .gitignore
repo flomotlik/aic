@@ -4,3 +4,4 @@ manifest.mf
 nbbuild.xml
 build
 dist
+lib
