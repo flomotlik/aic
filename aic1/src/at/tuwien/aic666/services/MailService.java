@@ -11,6 +11,7 @@ portName = "NotificationPT", serviceName = "NotificationService")
 public class MailService {
 
     public boolean notifyCustomer(Customer customer, String message) {
+        //TODO check whether customer exists and throw fault if not
         System.out.println(message);
         try {
             Thread.sleep(30000);
