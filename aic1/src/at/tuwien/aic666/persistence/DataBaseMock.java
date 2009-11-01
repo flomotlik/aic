@@ -1,6 +1,5 @@
 package at.tuwien.aic666.persistence;
 
-import at.tuwien.aic666.datamodel.Address;
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.datamodel.Item;
 import java.util.ArrayList;
@@ -15,15 +14,12 @@ import java.util.Map;
 public class DataBaseMock {
 
     private Collection<Customer> customers;
-    private Collection<Item> items;
-    private Map<Item, Integer> availableItemsList;
-    private Map<Item, Address> shippingList;
-    private Map<Item, Address> shippedList;
-    
+    private Map<String, Integer> availableItems;
+    private Collection<Item> shippingList;
+    private Collection<Item> shippedList;
     private static DataBaseMock uniqueInstance;
 
-
-    //TODO do we need to make the methods ThreadSafe...
+    
     public static synchronized DataBaseMock getInstance() {
         if (DataBaseMock.uniqueInstance == null) {
             DataBaseMock.uniqueInstance = new DataBaseMock();
@@ -34,10 +30,10 @@ public class DataBaseMock {
 
     private DataBaseMock() {
         this.customers = new ArrayList<Customer>();
-        this.items = new ArrayList<Item>();
-        this.availableItemsList = new HashMap<Item, Integer>();
-        this.shippedList = new HashMap<Item, Address>();
-        this.shippingList = new HashMap<Item, Address>();
+        //this.items = new ArrayList<Item>();
+        this.availableItems = new HashMap<String, Integer>();
+        this.shippedList = new ArrayList<Item>();
+        this.shippingList = new ArrayList<Item>();
 
     }
 
@@ -50,39 +46,31 @@ public class DataBaseMock {
         this.customers = customers;
     }
 
-    public Collection<Item> getItems() {
-        return items;
+    public Map<String, Integer> getAvailableItemsList() {
+        return availableItems;
     }
 
-    public void setItems(Collection<Item> items) {
-        this.items = items;
+    public void setAvailableItemsList(Map<String, Integer> availableItemsList) {
+        this.availableItems = availableItemsList;
     }
 
-    public Map<Item, Integer> getAvailableItemsList() {
-        return availableItemsList;
-    }
-
-    public void setAvailableItemsList(Map<Item, Integer> availableItemsList) {
-        this.availableItemsList = availableItemsList;
-    }
-
-    public Map<Item, Address> getShippedList() {
+    public Collection<Item> getShippedList() {
         return shippedList;
     }
 
-    public void setShippedList(Map<Item, Address> shippedList) {
+    public void setShippedList(Collection<Item> shippedList) {
         this.shippedList = shippedList;
     }
 
-    public Map<Item, Address> getShippingList() {
+    public Collection<Item> getShippingList() {
         return shippingList;
     }
 
-    public void setShippingList(Map<Item, Address> shippingList) {
+    public void setShippingList(Collection<Item> shippingList) {
         this.shippingList = shippingList;
     }
 
-    public boolean addCustomer(final Customer customer) {
+    public synchronized boolean addCustomer(final Customer customer) {
         if (!this.customers.contains(customer)) {
             return this.customers.add(customer);
         }
@@ -102,7 +90,7 @@ public class DataBaseMock {
         return result;
     }
 
-    public boolean removeCustomerById(final String id) {
+    public synchronized boolean removeCustomerById(final String id) {
         for (final Customer customer : this.customers) {
             if (customer.getId().equals(id)) {
                 return this.customers.remove(customer);
@@ -112,37 +100,51 @@ public class DataBaseMock {
         return false;
     }
 
-    public boolean addItem(final Item item) {
-        if (!this.items.contains(item)) {
-            return this.items.add(item);
+    public synchronized void increaseItemsAvailable(final Item item, final int increase) {
+        final Integer currentQuantity = this.availableItems.get(item.getProductId());
+        final Integer newQuantity;
+
+        if (currentQuantity == null) {
+            newQuantity = increase;
+        } else {
+            newQuantity = currentQuantity + increase;
+        }
+
+        this.availableItems.put(item.getProductId(), newQuantity);
+    }
+
+    public synchronized void decreaseItemsAvailable(final Item item, final int decrease) {
+        final Integer currentQuantity = this.availableItems.get(item.getProductId());
+        final Integer newQuantity;
+
+        if (currentQuantity == null) {
+            newQuantity = 0;
+        } else {
+            if (currentQuantity >= decrease) {
+                newQuantity = currentQuantity - decrease;
+            } else {
+                newQuantity = 0;
+            }
+        }
+
+        this.availableItems.put(item.getProductId(), newQuantity);
+    }
+
+    public synchronized boolean addShippingItem(final Item item) {
+        return this.shippingList.add(item);
+    }
+
+    public synchronized boolean removeShippingItemById(final String id) {
+        for (final Item item : this.shippingList) {
+            if (item.getProductId().equals(id)) {
+                return this.shippingList.remove(item);
+            }
         }
 
         return false;
     }
 
-    public Item getItemById(final String id) {
-        Item result = null;
-        for (final Item item : this.items) {
-            if (item.getProductId().equals(id)) {
-                result = item;
-            }
-        }
-
-        return result;
+    public synchronized boolean addShippedItem(final Item item) {
+        return this.shippedList.add(item);
     }
-
-    public boolean removeItemById(final String id) {
-        for (final Item item : this.items) {
-            if (item.getProductId().equals(id)) {
-                return this.items.remove(item);
-            }
-        }
-
-        return false;
-    }
-
-    //TODO implement increase decrease availability of items
-    //TODO implement increase decrease shipping items
-    //TODO implement increase shipped items.
-
 }

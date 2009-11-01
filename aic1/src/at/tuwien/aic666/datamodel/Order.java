@@ -1,6 +1,7 @@
 package at.tuwien.aic666.datamodel;
 
 import at.tuwien.aic666.util.DateLongAdapter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,6 +28,10 @@ public class Order {
     @XmlElementWrapper(name = "items")
     @XmlElements(@XmlElement(name = "item"))
     private Collection<Item> items;
+
+    public Order() {
+        this.items = new ArrayList<Item>();
+    }
 
     public String getId() {
         return id;
