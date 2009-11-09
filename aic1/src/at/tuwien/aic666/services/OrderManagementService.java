@@ -13,7 +13,7 @@ import javax.jws.WebService;
  *
  * @author peter
  */
-
+// FIXME namespace/port/servicename
 @WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
 portName = "NotificationPT", serviceName = "NotificationService")
 public class OrderManagementService {
@@ -29,11 +29,10 @@ public class OrderManagementService {
     public boolean checkAvailability(final Item item) {
         final Integer quantity = this.db.getAvailableItemsList().get(item.getProductId());
 
-        return quantity >= item.getQuantity() ? true : false;
+        return quantity >= item.getQuantity();
     }
 
-    //please note.. not an array... is this important...
-    public Order placeOrder(final Collection<Item> items, final Customer customer) {
+    public Order placeOrder(final Item[] items, final Customer customer) {
         final Order order = new Order();
         
         order.setCustomer(customer);
@@ -44,10 +43,13 @@ public class OrderManagementService {
             if (i.getQuantity() <= this.db.getAvailableItemsList().get(i.getProductId())) {
                 this.db.decreaseItemsAvailable(i, i.getQuantity());
                 this.db.addShippingItem(i);
-                final Collection<Item> currentItems = order.getItems();
-                currentItems.add(i);
-                order.setItems(currentItems);
+                // ?
+                //final Collection<Item> currentItems = order.getItems();
+                //currentItems.add(i);
+                //order.setItems(currentItems);
+                order.getItems().add(i);
             } else {
+                // TODO undo db changes made so far (decreaseItemsAvailable, addShippingItem)
                 throw new ItemUnavailableFault("Item with id " + i.getProductId() + "is not available");
             }
         }

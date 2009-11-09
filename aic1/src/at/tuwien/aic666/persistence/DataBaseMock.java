@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -13,12 +15,17 @@ import java.util.Map;
  */
 public class DataBaseMock {
 
-    private Collection<Customer> customers;
+    private Map<String, Customer> customers;
     private Map<String, Integer> availableItems;
     private Collection<Item> shippingList;
     private Collection<Item> shippedList;
     private static DataBaseMock uniqueInstance;
 
+    /**
+     * @author kevin
+     * @return
+     */
+    private Timer shippingTimer;
     
     public static synchronized DataBaseMock getInstance() {
         if (DataBaseMock.uniqueInstance == null) {
@@ -29,20 +36,19 @@ public class DataBaseMock {
     }
 
     private DataBaseMock() {
-        this.customers = new ArrayList<Customer>();
+        this.customers = new HashMap<String, Customer>();
         //this.items = new ArrayList<Item>();
         this.availableItems = new HashMap<String, Integer>();
         this.shippedList = new ArrayList<Item>();
         this.shippingList = new ArrayList<Item>();
-
+        this.shippingTimer = new Timer();
     }
 
-    // -- getter and setter --
-    public Collection<Customer> getCustomers() {
+    public Map<String, Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Collection<Customer> customers) {
+    public void setCustomers(Map<String, Customer> customers) {
         this.customers = customers;
     }
 
@@ -71,33 +77,20 @@ public class DataBaseMock {
     }
 
     public synchronized boolean addCustomer(final Customer customer) {
-        if (!this.customers.contains(customer)) {
-            return this.customers.add(customer);
+        if (!this.customers.containsValue(customer)) {
+            this.customers.put(customer.getId(), customer);
+            return true;
         }
-
         return false;
     }
 
     // -- helper methods --
     public Customer getCustomerById(final String id) {
-        Customer result = null;
-        for (final Customer customer : this.customers) {
-            if (customer.getId().equals(id)) {
-                result = customer;
-            }
-        }
-
-        return result;
+        return this.customers.get(id);
     }
 
     public synchronized boolean removeCustomerById(final String id) {
-        for (final Customer customer : this.customers) {
-            if (customer.getId().equals(id)) {
-                return this.customers.remove(customer);
-            }
-        }
-
-        return false;
+        return this.customers.remove(id) != null;
     }
 
     public synchronized void increaseItemsAvailable(final Item item, final int increase) {
@@ -130,8 +123,20 @@ public class DataBaseMock {
         this.availableItems.put(item.getProductId(), newQuantity);
     }
 
+    /**
+     * TODO make sure this is threadsafe
+     * maybe it's easier to put all items into a HashMap that maps onto Boolean
+     * to show whether it has been shipped or not?
+     * @author kevin
+     */
     public synchronized boolean addShippingItem(final Item item) {
-        return this.shippingList.add(item);
+        boolean toReturn = this.shippingList.add(item);
+        this.shippingTimer.schedule(new TimerTask() {
+            public void run() {
+                shippingList.remove(item);
+                addShippedItem(item);
+            }}, 5000); // move item in 5 seconds
+        return toReturn;
     }
 
     public synchronized boolean removeShippingItemById(final String id) {

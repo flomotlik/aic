@@ -8,6 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
 
+/**
+ * @author peter
+ */
 @WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
 portName = "NotificationPT", serviceName = "NotificationService")
 public class MailService {

@@ -7,6 +7,9 @@ import at.tuwien.aic666.util.UnknownCustomerFault;
 import java.util.Random;
 import javax.jws.WebService;
 
+/**
+ * @author peter
+ */
 @WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
 portName = "NotificationPT", serviceName = "NotificationService")
 public class SMSService {
