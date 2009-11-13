@@ -13,9 +13,11 @@ import at.tuwien.aic666.services.ServiceStarter;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ws.rs.core.MediaType;
 import javax.xml.ws.soap.SOAPFaultException;
 import junit.framework.Assert;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
@@ -44,6 +46,8 @@ public class Tester {
     private void testCustomerManagementService() {
         System.out.println("Testing Customer JaxRS Service");
         CustomerManagement customerManagementService = JAXRSClientFactory.create(ServiceStarter.customerAddress, CustomerManagement.class);
+        WebClient.client(customerManagementService).type("application/xml");
+        WebClient.client(customerManagementService).accept("application/xml");
         Customer c = new Customer();
         final String id = "CustomerManagementService";
         c.setId(id);
