@@ -25,11 +25,11 @@ public class CustomerManagementServiceSoap implements CustomerManagementSoap {
         return this.customerManagementService.getCustomer(id);
     }
 
-    public boolean updateCustomer(Customer c) {
-        return this.customerManagementService.updateCustomer(c);
+    public void updateCustomer(Customer c) {
+        this.customerManagementService.updateCustomer(c);
     }
 
-    public boolean deleteCustomer(String id) {
-        return this.customerManagementService.deleteCustomer(id);
+    public void deleteCustomer(String id) {
+        this.customerManagementService.deleteCustomer(id);
     }
 }

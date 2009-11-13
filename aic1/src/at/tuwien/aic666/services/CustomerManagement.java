@@ -19,6 +19,8 @@ import javax.ws.rs.Produces;
  *
  * @author florian
  */
+@Path("/customers/")
+@Produces({"application/json", "application/xml"})
 public interface CustomerManagement {
 
     @PUT
@@ -29,7 +31,7 @@ public interface CustomerManagement {
 
     @DELETE
     @Path(value = "/delete/{id}")
-    boolean deleteCustomer(@PathParam(value = "id")
+    void deleteCustomer(@PathParam("id")
     String id);
 
     @GET
@@ -41,6 +43,6 @@ public interface CustomerManagement {
     @POST
     @Path(value = "/update/")
     @Consumes(value = {"application/json", "application/xml"})
-    boolean updateCustomer(Customer c);
+    void updateCustomer(Customer c);
 
 }

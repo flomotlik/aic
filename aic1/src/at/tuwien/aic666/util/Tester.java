@@ -1,4 +1,4 @@
-package at.tuwien.aic666;
+package at.tuwien.aic666.util;
 
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.services.CustomerManagement;
@@ -30,8 +30,12 @@ public class Tester {
         Customer c2 = customerManagementService.getCustomer("1");
         Assert.assertEquals("1", c2.getId());
         Assert.assertEquals("Name", c2.getName());
-        customerManagementService.deleteCustomer("1");
+        c.setName("NewName");
+        customerManagementService.updateCustomer(c);
         Customer c3 = customerManagementService.getCustomer("1");
-        Assert.assertEquals(null, c3);
+        Assert.assertEquals("NewName", c3.getName());
+        customerManagementService.deleteCustomer("1");
+        Customer c4 = customerManagementService.getCustomer("1");
+        Assert.assertEquals(null, c4);
     }
 }

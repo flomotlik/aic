@@ -53,17 +53,17 @@ public class CustomerManagementService implements CustomerManagement {
     @POST
     @Path("/update/")
     @Consumes({"application/json", "application/xml"})
-    public boolean updateCustomer(Customer c) {
+    public void updateCustomer(Customer c) {
         // TODO check whether this really overwrites any preexisting entries
         // TODO any exceptions if user not known?
-        return this.db.addCustomer(c);
+        this.db.addCustomer(c);
     }
 
     @DELETE
     @Path("/delete/{id}")
-    public boolean deleteCustomer(@PathParam("id") String id) {
+    public void deleteCustomer(@PathParam("id") String id) {
         System.out.println("Deleting customer " + id);
-        return this.db.removeCustomerById(id); // TODO throw exception instead of returning false when user not found?
+        this.db.removeCustomerById(id); // TODO throw exception instead of returning false when user not found?
     }
 
 }
