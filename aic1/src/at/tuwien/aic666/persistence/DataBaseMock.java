@@ -152,4 +152,12 @@ public class DataBaseMock {
     public synchronized boolean addShippedItem(final Item item) {
         return this.shippedList.add(item);
     }
+
+    public synchronized void clear() {
+        this.customers.clear();
+        this.availableItems.clear();
+        this.shippingList.removeAll(this.shippingList);
+        this.shippedList.removeAll(this.shippedList);
+
+    }
 }

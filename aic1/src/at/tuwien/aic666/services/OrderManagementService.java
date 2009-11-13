@@ -8,6 +8,8 @@ import at.tuwien.aic666.datamodel.PaymentPreference;
 import at.tuwien.aic666.persistence.DataBaseMock;
 import at.tuwien.aic666.util.ItemUnavailableFault;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.jws.WebService;
 
 /**
@@ -70,6 +72,8 @@ public class OrderManagementService {
     }
 
     public void insertTestData() {
+        this.db.clear();
+
         final Address add1 = new Address("add1", "street1", "city1", "666", 6, 6);
         final Address add2 = new Address("add2", "street2", "city2", "1000", 1, 2);
 
@@ -83,14 +87,19 @@ public class OrderManagementService {
         cust2.setPreference(PaymentPreference.CREDIT_CARD);
         cust2.setAddress(add2);
 
+        final Map<String, Customer> customers = new HashMap<String, Customer>();
+        customers.put("1", cust1);
+        customers.put("2", cust2);
+
         final Item item1 = new Item();
         final Item item2 = new Item();
         item1.setProductId("item1");
         item2.setProductId("item2");
 
+
         this.db.increaseItemsAvailable(item1, 5);
         this.db.increaseItemsAvailable(item2, 1);
-
+        this.db.setCustomers(customers);
 
 
     }
