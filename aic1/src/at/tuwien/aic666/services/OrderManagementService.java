@@ -5,7 +5,6 @@ import at.tuwien.aic666.datamodel.Item;
 import at.tuwien.aic666.datamodel.Order;
 import at.tuwien.aic666.persistence.DataBaseMock;
 import at.tuwien.aic666.util.ItemUnavailableFault;
-import java.util.Collection;
 import java.util.Date;
 import javax.jws.WebService;
 

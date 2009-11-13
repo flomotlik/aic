@@ -5,7 +5,7 @@
     <property name="lib.dir" value="lib"/>
     <property name="build.dir" value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="main-class" value="at.tuwien.aic666.services.App"/>
+    <property name="main-class" value="at.tuwien.aic666.services.ServiceStarter"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>

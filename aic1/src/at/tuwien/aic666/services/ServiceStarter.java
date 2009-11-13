@@ -34,6 +34,7 @@ public class ServiceStarter {
         Endpoint.publish(smsAddress, new SMSService());
         Endpoint.publish(mailAddress, new MailService());
         Endpoint.publish(orderManagementAddress, new OrderManagementService());
+        Endpoint.publish(customerSoapAddress, new CustomerManagementServiceSoap());
 
         // Security properties for BankingService
         Map<String,Object> inProps= new HashMap<String,Object>();
@@ -60,9 +61,6 @@ public class ServiceStarter {
 //        rs.setBindingId(JAXRS)
         rs.setAddress(customerAddress);
         rs.create();
-
-        // TODO SOAP-wrapped customer-service
-        //Endpoint.publish(customerSoapAddress, new TODO());
 
         System.out.println("All services running..");
     }

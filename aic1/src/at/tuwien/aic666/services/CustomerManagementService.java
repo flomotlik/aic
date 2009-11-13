@@ -18,7 +18,7 @@ import javax.ws.rs.Produces;
  */
 @Path("/customers/")
 @Produces({"application/json", "application/xml"})
-public class CustomerManagementService {
+public class CustomerManagementService implements CustomerManagement {
 
     DataBaseMock db;
 
@@ -34,6 +34,7 @@ public class CustomerManagementService {
     @Produces({"application/json", "application/xml"})
     public Customer createCustomer(Customer c) {
         // TODO return only id or full customer?
+        System.out.println("Creating Customer with id:" + c.getId());
         return c;
     }
 
