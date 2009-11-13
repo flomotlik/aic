@@ -16,7 +16,7 @@ import org.apache.ws.security.handler.WSHandlerConstants;
  * @author florian
  * @author kevin
  */
-public class App {
+public class ServiceStarter {
 
     /**
      *  Server-endpoint according to specification.
