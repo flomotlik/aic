@@ -44,35 +44,35 @@ public class DataBaseMock {
         this.shippingTimer = new Timer();
     }
 
-    public Map<String, Customer> getCustomers() {
+    public synchronized Map<String, Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(Map<String, Customer> customers) {
+    public synchronized void setCustomers(Map<String, Customer> customers) {
         this.customers = customers;
     }
 
-    public Map<String, Integer> getAvailableItemsList() {
+    public synchronized Map<String, Integer> getAvailableItemsList() {
         return availableItems;
     }
 
-    public void setAvailableItemsList(Map<String, Integer> availableItemsList) {
+    public synchronized void setAvailableItemsList(Map<String, Integer> availableItemsList) {
         this.availableItems = availableItemsList;
     }
 
-    public Collection<Item> getShippedList() {
+    public synchronized Collection<Item> getShippedList() {
         return shippedList;
     }
 
-    public void setShippedList(Collection<Item> shippedList) {
+    public synchronized void setShippedList(Collection<Item> shippedList) {
         this.shippedList = shippedList;
     }
 
-    public Collection<Item> getShippingList() {
+    public synchronized Collection<Item> getShippingList() {
         return shippingList;
     }
 
-    public void setShippingList(Collection<Item> shippingList) {
+    public synchronized void setShippingList(Collection<Item> shippingList) {
         this.shippingList = shippingList;
     }
 
@@ -85,7 +85,7 @@ public class DataBaseMock {
     }
 
     // -- helper methods --
-    public Customer getCustomerById(final String id) {
+    public synchronized Customer getCustomerById(final String id) {
         return this.customers.get(id);
     }
 
