@@ -14,8 +14,9 @@ public class ServerPasswordCallback implements CallbackHandler {
 
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
-        // TODO depending on the value of pc.getIdentifier() set the password to something which will be compared to what the client sent
-        pc.setPassword("dummy");
+        System.out.println("Testing authentication for username " + pc.getIdentifier());
+        // ideally we would want to set this depending on the value of pc.getIdentifier()
+        pc.setPassword("test-password");
     }
 
 }

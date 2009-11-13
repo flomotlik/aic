@@ -128,7 +128,7 @@ public class Tester {
         }
     }
 
-    private void testBankingService() {
+        private void testBankingService() {
         System.out.println("Testing Banking Service with username token authentication");
         JaxWsProxyFactoryBean svrFactory = new JaxWsProxyFactoryBean();
         svrFactory.setServiceClass(IBankingService.class);
@@ -138,18 +138,42 @@ public class Tester {
         Map<String, Object> outProps = new HashMap<String, Object>();
         outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         // Specify our username, which isn't currently tested on the server-side anyway
+        outProps.put(WSHandlerConstants.USER, "user-joe");
+        // hashed password use:
+        outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_DIGEST);
+        // Callback used to retrieve (correct) password for given user.
+        outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, TestPasswordCallback.class.getName());
+        WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+        svrFactory.getOutInterceptors().add(wssOut);
+
+        IBankingService bankingService = (IBankingService) svrFactory.create();
+        // We don't actually need a customer because the BankingService is just a dummy
+        bankingService.chargeCreditCard(null, 20000);
+        bankingService.doBankTransfer(null, 40000);
+
+        // The same thing again but this time with an incorrect password
+        svrFactory = new JaxWsProxyFactoryBean();
+        svrFactory.setServiceClass(IBankingService.class);
+        svrFactory.setAddress(ServiceStarter.bankingAddress);
+        // Security properties
+        outProps = new HashMap<String, Object>();
+        outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
         // Specify our username, which isn't currently tested on the server-side anyway
         outProps.put(WSHandlerConstants.USER, "user-joe");
         // hashed password use:
         outProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_DIGEST);
         // Callback used to retrieve (correct) password for given user.
-        outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, ServerPasswordCallback.class.getName());
-        WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+        outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, TestIncorrectPasswordCallback.class.getName());
+        wssOut = new WSS4JOutInterceptor(outProps);
         svrFactory.getOutInterceptors().add(wssOut);
 
-        IBankingService bankingService = (IBankingService) svrFactory.create();
-        bankingService.chargeCreditCard(null, 20000);
-        bankingService.doBankTransfer(null, 40000);
+        bankingService = (IBankingService) svrFactory.create();
+        try {
+            bankingService.chargeCreditCard(null, 20000);
+            Assert.fail();
+        } catch (SOAPFaultException e) {
+            System.out.println(e.getFault().toString() + " caught correctly: " + e.getMessage());
+        }
     }
 
     private void testCheckAvailability() {
@@ -163,10 +187,10 @@ public class Tester {
         final Item item = new Item();
         item.setProductId("item1");
         try {
-        Assert.assertEquals(true, service.checkAvailability(item));
+            Assert.assertEquals(true, service.checkAvailability(item));
         } catch (SoapFaultException e) {
             Assert.assertTrue(true);
-                    
+
         }
     }
 
