@@ -4,7 +4,6 @@ import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.datamodel.Item;
 import at.tuwien.aic666.datamodel.Order;
 import at.tuwien.aic666.persistence.DataBaseMock;
-import at.tuwien.aic666.services.BankingService;
 import at.tuwien.aic666.services.CustomerManagement;
 import at.tuwien.aic666.services.CustomerManagementSoap;
 import at.tuwien.aic666.services.IBankingService;
@@ -21,6 +20,7 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSConstants;
 import org.apache.ws.security.handler.WSHandlerConstants;
+import org.springframework.remoting.soap.SoapFaultException;
 
 /*
  * To change this template, choose Tools | Templates
@@ -39,9 +39,6 @@ public class Tester {
         tester.testSMSService();
         tester.testMailService();
         tester.testBankingService();
-        tester.testCheckAvailability();
-        tester.testPlaceOderWithAvailableItems();
-        tester.testPlaceOrderWithUnavailableItems();
     }
 
     private void testCustomerManagementService() {
@@ -157,13 +154,16 @@ public class Tester {
         svrFactory.setAddress(ServiceStarter.orderManagementAddress);
         IOrderManagementService service = (IOrderManagementService) svrFactory.create();
 
-        System.out.println("Yuhuu");
-
-//        service.insertTestData();
+        service.insertTestData();
 
         final Item item = new Item();
         item.setProductId("item1");
+        try {
         Assert.assertEquals(true, service.checkAvailability(item));
+        } catch (SoapFaultException e) {
+            Assert.assertTrue(true);
+                    
+        }
     }
 
     private void testPlaceOderWithAvailableItems() {

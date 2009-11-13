@@ -7,6 +7,9 @@ import at.tuwien.aic666.datamodel.Order;
 import at.tuwien.aic666.datamodel.PaymentPreference;
 import at.tuwien.aic666.persistence.DataBaseMock;
 import at.tuwien.aic666.util.ItemUnavailableFault;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,11 +93,16 @@ public class OrderManagementService implements IOrderManagementService {
         customers.put("1", cust1);
         customers.put("2", cust2);
 
+
         final Item item1 = new Item();
         final Item item2 = new Item();
         item1.setProductId("item1");
-        item2.setProductId("item2");
+        item1.setQuantity(2);
+        item1.setSingleUnitPrice(new BigDecimal(10));
 
+        item2.setProductId("item2");
+        item1.setQuantity(2);
+        item1.setSingleUnitPrice(new BigDecimal(10));
 
         this.db.increaseItemsAvailable(item1, 5);
         this.db.increaseItemsAvailable(item2, 1);
