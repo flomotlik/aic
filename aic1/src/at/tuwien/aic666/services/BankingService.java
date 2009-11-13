@@ -13,8 +13,7 @@ import javax.jws.WebService;
  * @author kevin
  */
 // FIXME namespace/port/servicename
-@WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
-portName = "NotificationPT", serviceName = "NotificationService")
+@WebService(endpointInterface = "at.tuwien.aic666.services.IBankingService", serviceName = "BankingService")
 public class BankingService {
 
     public void chargeCreditCard(Customer c, Integer amount) {

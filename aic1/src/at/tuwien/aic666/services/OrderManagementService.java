@@ -17,9 +17,8 @@ import javax.jws.WebService;
  * @author peter
  */
 // FIXME namespace/port/servicename
-@WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
-portName = "NotificationPT", serviceName = "NotificationService")
-public class OrderManagementService {
+@WebService(endpointInterface = "at.tuwien.aic666.services.IOrderManagementService", serviceName = "OrderManagementService")
+public class OrderManagementService implements IOrderManagementService {
 
     private static int counter = 0;
     private DataBaseMock db;
