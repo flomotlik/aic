@@ -9,7 +9,7 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
  */
 @WebService(endpointInterface = "at.tuwien.aic666.services.CustomerManagementSoap",
 serviceName = "CustomerManagementServiceSoap")
-public class CustomerManagementServiceSoap implements CustomerManagementSoap {
+public class CustomerManagementServiceSoap {
 
     private CustomerManagement customerManagementService;
 
