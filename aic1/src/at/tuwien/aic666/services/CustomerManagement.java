@@ -5,6 +5,7 @@
 package at.tuwien.aic666.services;
 
 import at.tuwien.aic666.datamodel.Customer;
+import javax.jws.WebService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
