@@ -35,7 +35,11 @@ public class CustomerManagementService implements CustomerManagement {
     public Customer createCustomer(Customer c) {
         // TODO return only id or full customer?
         System.out.println("Creating Customer with id:" + c.getId());
-        return c;
+        if(this.db.addCustomer(c)){
+            return c;
+        }else{
+            return null;
+        }
     }
 
     @GET

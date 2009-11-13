@@ -5,8 +5,6 @@ import javax.jws.WebService;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 
 /**
- * TODO this thing is definitely not finished and completely untested!
- *
  * @author flo
  */
 @WebService(endpointInterface = "at.tuwien.aic666.services.CustomerManagementSoap",

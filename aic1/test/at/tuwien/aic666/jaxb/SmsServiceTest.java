@@ -10,7 +10,6 @@ import at.tuwien.aic666.services.ServiceStarter;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
 /**
- *
  * @author florian
  */
 public class SmsServiceTest {
