@@ -3,8 +3,9 @@ package at.tuwien.aic666.util;
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.services.CustomerManagement;
 import at.tuwien.aic666.services.CustomerManagementSoap;
-import at.tuwien.aic666.services.ISMSService;
+import at.tuwien.aic666.services.INotify;
 import at.tuwien.aic666.services.ServiceStarter;
+import javax.xml.ws.soap.SOAPFaultException;
 import junit.framework.Assert;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
@@ -23,6 +24,8 @@ public class Tester {
         Tester tester = new Tester();
         tester.testCustomerManagementService();
         tester.testCustomerManagementServiceSoapWrapper();
+        tester.testSMSService();
+        tester.testMailService();
     }
 
     private void testCustomerManagementService() {
@@ -66,5 +69,45 @@ public class Tester {
         customerManagementService.deleteCustomer(id);
         Customer c4 = customerManagementService.getCustomer(id);
         Assert.assertEquals(null, c4);
+        c.setId("1");
+        customerManagementService.createCustomer(c);
+    }
+
+    private void testSMSService() {
+        JaxWsProxyFactoryBean svrFactory = new JaxWsProxyFactoryBean();
+        svrFactory.setServiceClass(INotify.class);
+        svrFactory.setAddress(ServiceStarter.smsAddress);
+        INotify service = (INotify) svrFactory.create();
+        boolean notifyCustomer = service.notifyCustomer(new Customer("1"), "Message");
+        System.out.println("Notified: " + notifyCustomer);
+        try {
+            service.notifyCustomer(new Customer("2"), "Message");
+            Assert.fail();
+        } catch (SOAPFaultException e) {
+            System.out.println(e.getFault().toString() + " caught correctly: " + e.getMessage());
+        }
+        try {
+            service.notifyCustomer(new Customer("1"), "MessageMessageMessageMessageMessageMessageMessageMessage" +
+                    "MessageMessageMessageMessageMessageMessageMessageMessage" +
+                    "MessageMessageMessageMessageMessageMessageMessageMessageMessage");
+            Assert.fail();
+        } catch (SOAPFaultException e) {
+            System.out.println(e.getFault() + " caught correctly: " + e.getMessage());
+        }
+    }
+
+    private void testMailService() {
+        JaxWsProxyFactoryBean svrFactory = new JaxWsProxyFactoryBean();
+        svrFactory.setServiceClass(INotify.class);
+        svrFactory.setAddress(ServiceStarter.mailAddress);
+        INotify service = (INotify) svrFactory.create();
+        boolean notifyCustomer = service.notifyCustomer(new Customer("1"), "Message");
+        System.out.println("Notified: " + notifyCustomer);
+        try {
+            service.notifyCustomer(new Customer("2"), "Message");
+            Assert.fail();
+        } catch (SOAPFaultException e) {
+            System.out.println(e.getFault().toString() + " caught correctly: " + e.getMessage());
+        }
     }
 }

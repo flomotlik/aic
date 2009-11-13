@@ -10,22 +10,22 @@ import javax.jws.WebService;
 /**
  * @author peter
  */
-@WebService(endpointInterface = "at.tuwien.aic666.services.ISMSService",
+@WebService(endpointInterface = "at.tuwien.aic666.services.INotify",
 serviceName = "NotificationService", targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
 portName = "NotificationPT")
-public class SMSService implements ISMSService {
+public class SMSService implements INotify {
 
     public boolean notifyCustomer(Customer customer, String message) {
 
         if (!existsCustomer(customer)) {
-            throw new UnknownCustomerFault("The customer with id" + customer.getId() + "is not known to the system");
+            throw new UnknownCustomerFault("The customer with id " + customer.getId() + " is not known to the system");
         }
 
         if (message.length() > 160) {
             throw new MessageTooLongFault("The message is longer than 160 characters");
         }
 
-        System.out.println(message);
+        System.out.println("SMSService: " + message);
         return new Random().nextBoolean();
     }
 

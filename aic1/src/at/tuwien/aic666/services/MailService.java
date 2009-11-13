@@ -11,22 +11,24 @@ import javax.jws.WebService;
 /**
  * @author peter
  */
-@WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
-portName = "NotificationPT", serviceName = "NotificationService")
-public class MailService {
+@WebService(endpointInterface = "at.tuwien.aic666.services.INotify",
+serviceName = "NotificationService", targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
+portName = "NotificationPT")
+public class MailService implements INotify {
 
     public boolean notifyCustomer(Customer customer, String message) {
         //TODO check whether customer exists and throw fault if not
         if (!this.existsCustomer(customer)) {
             throw new UnknownCustomerFault("The customer with id" + customer.getId() + "is not known to the system");
         }
-        
-        System.out.println(message);
+
+        System.out.println("MailSerivce: " + message);
         try {
-            Thread.sleep(30000);
+            Thread.sleep(3000);
         } catch (InterruptedException ex) {
             Logger.getLogger(MailService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("Slept");
         return new Random().nextBoolean();
     }
 

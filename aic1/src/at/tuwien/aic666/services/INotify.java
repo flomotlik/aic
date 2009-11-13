@@ -13,7 +13,7 @@ import javax.jws.WebService;
  * @author florian
  */
 @WebService
-public interface ISMSService {
+public interface INotify {
 
     boolean notifyCustomer(Customer customer, String message);
 
