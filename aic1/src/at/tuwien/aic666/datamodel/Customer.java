@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package at.tuwien.aic666.datamodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,13 +17,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "customer")
 public class Customer {
 
+    public Customer() {
+    }
+
+    public Customer(String id) {
+        this.id = id;
+    }
     @XmlAttribute(name = "id")
     private String id;
-
     private String name;
-
     private PaymentPreference preference;
-
     private Address address;
 
     public String getId() {

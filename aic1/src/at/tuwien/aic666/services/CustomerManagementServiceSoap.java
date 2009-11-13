@@ -9,15 +9,14 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
  *
  * @author flo
  */
-@WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
-portName = "NotificationPT", serviceName = "CustomerManagementServiceSoap")
-public class CustomerManagementServiceSoap {
+@WebService(endpointInterface = "at.tuwien.aic666.services.CustomerManagementSoap",
+serviceName = "CustomerManagementServiceSoap")
+public class CustomerManagementServiceSoap implements CustomerManagementSoap {
 
     private CustomerManagement customerManagementService;
 
     public CustomerManagementServiceSoap() {
-        this.customerManagementService = JAXRSClientFactory.
-                create(ServiceStarter.customerAddress, CustomerManagement.class);
+        this.customerManagementService = JAXRSClientFactory.create(ServiceStarter.customerAddress, CustomerManagement.class);
     }
 
     public Customer createCustomer(Customer c) {

@@ -45,7 +45,7 @@
             </classpath>
         </java>
     </target>
-    
+
     <!-- mixed tasks -->
     <target name="clean-compile" depends="clean, compile"/>
     <target name="all" depends="clean, compile, run-services" />

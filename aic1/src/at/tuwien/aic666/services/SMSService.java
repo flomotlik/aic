@@ -10,12 +10,13 @@ import javax.jws.WebService;
 /**
  * @author peter
  */
-@WebService(targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
-portName = "NotificationPT", serviceName = "NotificationService")
-public class SMSService {
+@WebService(endpointInterface = "at.tuwien.aic666.services.ISMSService",
+serviceName = "NotificationService", targetNamespace = "http://infosys.tuwien.ac.at/ait09/ass1/dto/notification",
+portName = "NotificationPT")
+public class SMSService implements ISMSService {
 
     public boolean notifyCustomer(Customer customer, String message) {
-        
+
         if (!existsCustomer(customer)) {
             throw new UnknownCustomerFault("The customer with id" + customer.getId() + "is not known to the system");
         }

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package at.tuwien.aic666.datamodel;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,16 +19,24 @@ public class Address {
 
     @XmlAttribute(name = "id")
     private String id;
-
     private String street;
-
     private String city;
-
     private String zipCode;
-
     private int house;
-
     private int door;
+
+    public Address() {
+    }
+
+    //Help Constructor
+    public Address(String id, String street, String city, String zipCode, int house, int door) {
+        this.id = id;
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.house = house;
+        this.door = door;
+    }
 
     public String getCity() {
         return this.city;
