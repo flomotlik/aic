@@ -29,30 +29,40 @@ public class ServiceStarter {
     public static final String customerSoapAddress = "http://localhost:8086/customersoap";
     
     public static void main(String args[]) {
-        System.out.println("Starting Server..");
+        // Parse command line parameter indicating service security properties
+        boolean secure = true;
+        if (args.length == 1 && args[0].equals("nonsecure")) {
+            secure = false;
+            System.out.println("Starting services without security..");
+        } else if (args.length != 0) {
+            System.out.println("Usage: java ServiceStarter [nonsecure]");
+            System.exit(1);
+        } else {
+            System.out.println("Starting services..");
+        }
 
         Endpoint.publish(smsAddress, new SMSService());
         Endpoint.publish(mailAddress, new MailService());
         Endpoint.publish(orderManagementAddress, new OrderManagementService());
         Endpoint.publish(customerSoapAddress, new CustomerManagementServiceSoap());
 
-        // Security properties for BankingService
-        Map<String,Object> inProps= new HashMap<String,Object>();
-        inProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
-        inProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_DIGEST);
-        // inProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-        // Callback used to retrieve password for given user.
-        inProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, ServerPasswordCallback.class.getName());
-        WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
-
-        // Usage of ServerFactoryBean necessary to set Interceptors.
-        // Ideally we should also publish the three simple services above through this method?
+        // Usage of ServerFactoryBean necessary to set authentication interceptors
         JaxWsServerFactoryBean serverFactory = new JaxWsServerFactoryBean();
         serverFactory.setServiceClass(BankingService.class);
         serverFactory.setServiceBean(new BankingService());
         serverFactory.setAddress(bankingAddress);
-        serverFactory.getInInterceptors().add(wssIn);
-        serverFactory.getInInterceptors().add(new LoggingInInterceptor());
+        if (secure) {
+            // Security properties for BankingService
+            Map<String,Object> inProps= new HashMap<String,Object>();
+            inProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN);
+            inProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_DIGEST);
+            // inProps.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
+            // Callback used to retrieve password for given user.
+            inProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, ServerPasswordCallback.class.getName());
+            WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
+            serverFactory.getInInterceptors().add(wssIn);
+            serverFactory.getInInterceptors().add(new LoggingInInterceptor());
+        }
         serverFactory.create();
 
         // RS customer-service
