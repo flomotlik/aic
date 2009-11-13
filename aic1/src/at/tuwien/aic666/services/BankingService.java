@@ -12,7 +12,6 @@ import javax.jws.WebService;
  *
  * @author kevin
  */
-// FIXME namespace/port/servicename
 @WebService(endpointInterface = "at.tuwien.aic666.services.IBankingService", serviceName = "BankingService")
 public class BankingService {
 

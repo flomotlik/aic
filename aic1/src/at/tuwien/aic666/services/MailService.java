@@ -17,7 +17,7 @@ portName = "NotificationPT")
 public class MailService implements INotify {
 
     public boolean notifyCustomer(Customer customer, String message) {
-        //TODO check whether customer exists and throw fault if not
+        
         if (!this.existsCustomer(customer)) {
             throw new UnknownCustomerFault("The customer with id" + customer.getId() + "is not known to the system");
         }

@@ -19,7 +19,6 @@ import javax.jws.WebService;
  *
  * @author peter
  */
-// FIXME namespace/port/servicename
 @WebService(endpointInterface = "at.tuwien.aic666.services.IOrderManagementService", serviceName = "OrderManagementService")
 public class OrderManagementService implements IOrderManagementService {
 
