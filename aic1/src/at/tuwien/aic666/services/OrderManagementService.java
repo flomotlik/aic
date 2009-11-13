@@ -1,8 +1,10 @@
 package at.tuwien.aic666.services;
 
+import at.tuwien.aic666.datamodel.Address;
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.datamodel.Item;
 import at.tuwien.aic666.datamodel.Order;
+import at.tuwien.aic666.datamodel.PaymentPreference;
 import at.tuwien.aic666.persistence.DataBaseMock;
 import at.tuwien.aic666.util.ItemUnavailableFault;
 import java.util.Date;
@@ -68,7 +70,29 @@ public class OrderManagementService {
     }
 
     public void insertTestData() {
-        //TODO implement method stub...
+        final Address add1 = new Address("add1", "street1", "city1", "666", 6, 6);
+        final Address add2 = new Address("add2", "street2", "city2", "1000", 1, 2);
+
+        final Customer cust1 = new Customer("1");
+        cust1.setName("Max Mustermann");
+        cust1.setPreference(PaymentPreference.BANK_TRANSFER);
+        cust1.setAddress(add1);
+
+        final Customer cust2 = new Customer("2");
+        cust2.setName("Joh Doe");
+        cust2.setPreference(PaymentPreference.CREDIT_CARD);
+        cust2.setAddress(add2);
+
+        final Item item1 = new Item();
+        final Item item2 = new Item();
+        item1.setProductId("item1");
+        item2.setProductId("item2");
+
+        this.db.increaseItemsAvailable(item1, 5);
+        this.db.increaseItemsAvailable(item2, 1);
+
+
+
     }
 
     /**
