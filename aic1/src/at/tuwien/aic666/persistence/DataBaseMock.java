@@ -135,7 +135,8 @@ public class DataBaseMock {
             public void run() {
                 shippingList.remove(item);
                 addShippedItem(item);
-            }}, 5000); // move item in 5 seconds
+                System.out.println("SHIPPED");
+            }}, 3000); // move item in 3 seconds
         return toReturn;
     }
 

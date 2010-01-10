@@ -53,6 +53,6 @@ public class Item {
     }
 
     public void afterUnmarshal(Unmarshaller u, Object parent) {
-        this.order = (Order) parent;
+        //this.order = (Order) parent;
     }
 }

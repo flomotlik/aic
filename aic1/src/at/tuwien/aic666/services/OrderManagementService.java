@@ -29,27 +29,34 @@ public class OrderManagementService implements IOrderManagementService {
         this.db = DataBaseMock.getInstance();
     }
 
-    public boolean checkAvailability(final Item item) {
-        final Integer quantity = this.db.getAvailableItemsList().get(item.getProductId());
+    public boolean checkAvailability(Item item) {
+        Integer quantity = this.db.getAvailableItemsList().get(item.getProductId());
 
+        if (quantity == null) {
+            System.out.println("Item Not Available");
+            return false;
+        }
+
+        System.out.println("DBQuantity: " + quantity + "\nQnt: " + item.getQuantity());
+        System.out.println("Available: " + (quantity >= item.getQuantity()));
         return quantity >= item.getQuantity();
     }
 
-    public Order placeOrder(final Item[] items, final Customer customer) {
-        final Order order = new Order();
+    public Order placeOrder(Item[] items, Customer customer) {
+        Order order = new Order();
 
         order.setCustomer(customer);
         order.setId("order" + OrderManagementService.counter++);
         order.setOrderDate(new Date());
 
         //check whether all items are available...
-        final Item item = this.checkItemsAvailability(items);
+        Item item = this.checkItemsAvailability(items);
         if (item != null) {
             //Does a Soap Fault break the method like an exception or continues...?
-            throw new ItemUnavailableFault("Item with id " + item.getProductId() + "is not available");
+            throw new ItemUnavailableFault("Item with id " + item.getProductId() + " is not available");
         }
 
-        for (final Item i : items) {
+        for (Item i : items) {
             if (i.getQuantity() <= this.db.getAvailableItemsList().get(i.getProductId())) {
                 this.db.decreaseItemsAvailable(i, i.getQuantity());
                 this.db.addShippingItem(i);
@@ -60,13 +67,11 @@ public class OrderManagementService implements IOrderManagementService {
         return order;
     }
 
-    public boolean isFinished(final Order order) {
+    public boolean isFinished(Order order) {
         boolean finished = false;
 
-        for (final Item i : order.getItems()) {
-            if (db.getShippedList().contains(i)) {
-                finished = true;
-            }
+        if (this.checkItems(order)) {
+            finished = true;
         }
 
         return finished;
@@ -75,36 +80,31 @@ public class OrderManagementService implements IOrderManagementService {
     public void insertTestData() {
         this.db.clear();
 
-        final Address add1 = new Address("add1", "street1", "city1", "666", 6, 6);
-        final Address add2 = new Address("add2", "street2", "city2", "1000", 1, 2);
+        Address add1 = new Address("add1", "street1", "city1", "666", 6, 6);
+        Address add2 = new Address("add2", "street2", "city2", "1000", 1, 2);
 
-        final Customer cust1 = new Customer("1");
+        Customer cust1 = new Customer("1");
         cust1.setName("Max Mustermann");
         cust1.setPreference(PaymentPreference.BANK_TRANSFER);
         cust1.setAddress(add1);
 
-        final Customer cust2 = new Customer("2");
+        Customer cust2 = new Customer("2");
         cust2.setName("Joh Doe");
         cust2.setPreference(PaymentPreference.CREDIT_CARD);
         cust2.setAddress(add2);
 
-        final Map<String, Customer> customers = new HashMap<String, Customer>();
+        Map<String, Customer> customers = new HashMap<String, Customer>();
         customers.put("1", cust1);
         customers.put("2", cust2);
 
 
-        final Item item1 = new Item();
-        final Item item2 = new Item();
+        Item item1 = new Item();
+        Item item2 = new Item();
         item1.setProductId("item1");
-        item1.setQuantity(2);
-        item1.setSingleUnitPrice(new BigDecimal(10));
-
         item2.setProductId("item2");
-        item1.setQuantity(2);
-        item1.setSingleUnitPrice(new BigDecimal(10));
 
         this.db.increaseItemsAvailable(item1, 5);
-        this.db.increaseItemsAvailable(item2, 1);
+        this.db.increaseItemsAvailable(item2, 0);
         this.db.setCustomers(customers);
 
 
@@ -116,12 +116,35 @@ public class OrderManagementService implements IOrderManagementService {
      * @param items the items to check
      * @return read javadoc....
      */
-    private Item checkItemsAvailability(final Item[] items) {
-        for (final Item i : items) {
+    private Item checkItemsAvailability(Item[] items) {
+        for (Item i : items) {
             if (i.getQuantity() > this.db.getAvailableItemsList().get(i.getProductId())) {
                 return i;
             }
         }
         return null;
+    }
+
+    private boolean checkItems(Order order) {
+
+        for (Item i : order.getItems()) {
+            boolean item = false;
+            for (Item shipped : db.getShippedList()) {
+                if (shipped.getProductId().equals(i.getProductId())) {
+                    item = true;
+                    break;
+                }
+            }
+
+            if (item) {
+                continue;
+            } else {
+                return false;
+            }
+
+        }
+
+        return true;
+
     }
 }

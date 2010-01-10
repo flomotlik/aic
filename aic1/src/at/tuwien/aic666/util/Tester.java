@@ -13,7 +13,6 @@ import at.tuwien.aic666.services.ServiceStarter;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import javax.xml.ws.soap.SOAPFaultException;
 import junit.framework.Assert;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
@@ -41,6 +40,9 @@ public class Tester {
         tester.testSMSService();
         tester.testMailService();
         tester.testBankingService();
+        tester.testCheckAvailability();
+        tester.testPlaceOderWithAvailableItems();
+        tester.testPlaceOrderWithUnavailableItems();
     }
 
     private void testCustomerManagementService() {
@@ -128,7 +130,7 @@ public class Tester {
         }
     }
 
-        private void testBankingService() {
+    private void testBankingService() {
         System.out.println("Testing Banking Service with username token authentication");
         JaxWsProxyFactoryBean svrFactory = new JaxWsProxyFactoryBean();
         svrFactory.setServiceClass(IBankingService.class);
@@ -184,13 +186,25 @@ public class Tester {
 
         service.insertTestData();
 
-        final Item item = new Item();
+        Item item = new Item();
         item.setProductId("item1");
+        item.setQuantity(2);
+
+        Item nonavail = new Item();
+        nonavail.setProductId("item2");
+        nonavail.setQuantity(2);
+
+        Item nonexist = new Item();
+        nonexist.setQuantity(100);
+        nonexist.setProductId("non-exist");
         try {
             Assert.assertEquals(true, service.checkAvailability(item));
-        } catch (SoapFaultException e) {
-            Assert.assertTrue(true);
+            Assert.assertEquals(false, service.checkAvailability(nonexist));
+            Assert.assertEquals(false, service.checkAvailability(nonavail));
 
+        } catch (SoapFaultException e) {
+            Assert.assertTrue(false);
+            System.out.println("failed");
         }
     }
 
@@ -202,7 +216,7 @@ public class Tester {
 
         service.insertTestData();
 
-        final Item item = new Item();
+        Item item = new Item();
         item.setProductId("item1");
         Assert.assertEquals(true, service.checkAvailability(item));
 
@@ -213,12 +227,17 @@ public class Tester {
         final Order order = service.placeOrder(items, DataBaseMock.getInstance().getCustomerById("1"));
         Assert.assertEquals(order.getCustomer(), DataBaseMock.getInstance().getCustomerById("1"));
         Assert.assertEquals(order.getItems().iterator().next().getQuantity(), item.getQuantity());
+        System.out.println("Order placed, waiting for shippment");
 
         int i = 0;
-        while (!service.isFinished(order) || i < 10) {
-            System.out.println("Polling order status: " + service.isFinished(order));
+        while (!service.isFinished(order)) {
+            if (i % 100 == 0) {
+                System.out.println("Polling order status: " + service.isFinished(order));
+            }
             i++;
         }
+
+        System.out.println("Polling order status: " + service.isFinished(order));
     }
 
     private void testPlaceOrderWithUnavailableItems() {
@@ -230,17 +249,18 @@ public class Tester {
         service.insertTestData();
 
         final Item item = new Item();
-        item.setProductId("notExisting");
+        item.setProductId("item2");
 
-        item.setQuantity(1);
+        item.setQuantity(2);
         item.setSingleUnitPrice(new BigDecimal(10));
 
         Item[] items = {item};
         try {
-            final Order order = service.placeOrder(items, DataBaseMock.getInstance().getCustomerById("1"));
+            service.placeOrder(items, DataBaseMock.getInstance().getCustomerById("1"));
             Assert.fail();
-        } catch (ItemUnavailableFault e) {
-            Assert.assertTrue(true);
+        } catch (SOAPFaultException e) {
+            System.out.println(e.getFault().toString() + " caught correctly: " + e.getMessage());
+            System.exit(1);
         }
     }
 }
