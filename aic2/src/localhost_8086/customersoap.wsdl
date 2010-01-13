@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CustomerManagementServiceSoap" targetNamespace="http://services.aic666.tuwien.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.aic666.tuwien.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://services.aic666.tuwien.at/" version="1.0" xmlns:tns="http://services.aic666.tuwien.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="createCustomer" type="tns:createCustomer" />
+<xs:element name="createCustomerResponse" type="tns:createCustomerResponse" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="deleteCustomer" type="tns:deleteCustomer" />
+<xs:element name="deleteCustomerResponse" type="tns:deleteCustomerResponse" />
+<xs:element name="getCustomer" type="tns:getCustomer" />
+<xs:element name="getCustomerResponse" type="tns:getCustomerResponse" />
+<xs:element name="payment-preference" type="tns:paymentPreference" />
+<xs:element name="updateCustomer" type="tns:updateCustomer" />
+<xs:element name="updateCustomerResponse" type="tns:updateCustomerResponse" />
+<xs:complexType name="deleteCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="deleteCustomerResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="getCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getCustomerResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="preference" type="tns:paymentPreference" />
+<xs:element minOccurs="0" name="address" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="updateCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="updateCustomerResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="createCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="createCustomerResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="paymentPreference">
+<xs:restriction base="xs:string">
+<xs:enumeration value="credit-card" />
+<xs:enumeration value="bank-transfer" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="updateCustomer">
+    <wsdl:part element="tns:updateCustomer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCustomerResponse">
+    <wsdl:part element="tns:createCustomerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteCustomer">
+    <wsdl:part element="tns:deleteCustomer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCustomerResponse">
+    <wsdl:part element="tns:getCustomerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCustomer">
+    <wsdl:part element="tns:getCustomer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteCustomerResponse">
+    <wsdl:part element="tns:deleteCustomerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateCustomerResponse">
+    <wsdl:part element="tns:updateCustomerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCustomer">
+    <wsdl:part element="tns:createCustomer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CustomerManagementSoap">
+    <wsdl:operation name="deleteCustomer">
+      <wsdl:input message="tns:deleteCustomer" name="deleteCustomer">
+    </wsdl:input>
+      <wsdl:output message="tns:deleteCustomerResponse" name="deleteCustomerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCustomer">
+      <wsdl:input message="tns:getCustomer" name="getCustomer">
+    </wsdl:input>
+      <wsdl:output message="tns:getCustomerResponse" name="getCustomerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateCustomer">
+      <wsdl:input message="tns:updateCustomer" name="updateCustomer">
+    </wsdl:input>
+      <wsdl:output message="tns:updateCustomerResponse" name="updateCustomerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createCustomer">
+      <wsdl:input message="tns:createCustomer" name="createCustomer">
+    </wsdl:input>
+      <wsdl:output message="tns:createCustomerResponse" name="createCustomerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomerManagementServiceSoapSoapBinding" type="tns:CustomerManagementSoap">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="deleteCustomer">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="deleteCustomer">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteCustomerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCustomer">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="getCustomer">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCustomerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateCustomer">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="updateCustomer">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateCustomerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createCustomer">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="createCustomer">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createCustomerResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustomerManagementServiceSoap">
+    <wsdl:port binding="tns:CustomerManagementServiceSoapSoapBinding" name="CustomerManagementServiceSoapPort">
+      <soap:address location="http://localhost:8086/customersoap" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

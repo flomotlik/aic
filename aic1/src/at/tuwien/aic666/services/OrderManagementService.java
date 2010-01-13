@@ -7,9 +7,6 @@ import at.tuwien.aic666.datamodel.Order;
 import at.tuwien.aic666.datamodel.PaymentPreference;
 import at.tuwien.aic666.persistence.DataBaseMock;
 import at.tuwien.aic666.util.ItemUnavailableFault;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,13 +86,19 @@ public class OrderManagementService implements IOrderManagementService {
         cust1.setAddress(add1);
 
         Customer cust2 = new Customer("2");
-        cust2.setName("Joh Doe");
+        cust2.setName("John Doe");
+        cust2.setPreference(PaymentPreference.CREDIT_CARD);
+        cust2.setAddress(add2);
+
+        Customer cust3 = new Customer("3");
+        cust2.setName("John 3");
         cust2.setPreference(PaymentPreference.CREDIT_CARD);
         cust2.setAddress(add2);
 
         Map<String, Customer> customers = new HashMap<String, Customer>();
         customers.put("1", cust1);
         customers.put("2", cust2);
+        customers.put("3", cust3);
 
 
         Item item1 = new Item();

@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.xml.ws.Endpoint;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.ws.security.WSConstants;
@@ -73,5 +74,13 @@ public class ServiceStarter {
         rs.create();
 
         System.out.println("All services running..");
+
+        JaxWsProxyFactoryBean svrFactory = new JaxWsProxyFactoryBean();
+        svrFactory.setServiceClass(IOrderManagementService.class);
+        svrFactory.setAddress(ServiceStarter.orderManagementAddress);
+        IOrderManagementService service = (IOrderManagementService) svrFactory.create();
+
+        service.insertTestData();
+        System.out.println("Test data inserted..");
     }
 }

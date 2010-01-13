@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <nextCatalog catalog="nbproject/private/cache/retriever/catalog.xml"/>
+    <system systemId="file:/Users/peter/Documents/TU/SEIC/2.Sem/AIC/Assignment2/OrderProcess.wsdl" uri="src/OrderProcess.wsdl"/>
+    <system systemId="file:/Users/peter/Documents/TU/SEIC/2.Sem/AIC/Assignment2/OrderProcess.xsd" uri="src/OrderProcess.xsd"/>
+    <system systemId="http://localhost:8086/customersoap?wsdl" uri="src/localhost_8086/customersoap.wsdl"/>
+</catalog>
+
+
