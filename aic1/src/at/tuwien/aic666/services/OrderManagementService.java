@@ -27,6 +27,7 @@ public class OrderManagementService implements IOrderManagementService {
     }
 
     public boolean checkAvailability(Item item) {
+        System.out.println("Checking item with id: " + item.getProductId());
         Integer quantity = this.db.getAvailableItemsList().get(item.getProductId());
 
         if (quantity == null) {
@@ -107,7 +108,7 @@ public class OrderManagementService implements IOrderManagementService {
         item2.setProductId("item2");
 
         this.db.increaseItemsAvailable(item1, 5);
-        this.db.increaseItemsAvailable(item2, 0);
+        this.db.increaseItemsAvailable(item2, 3);
         this.db.setCustomers(customers);
 
 
