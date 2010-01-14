@@ -6,7 +6,17 @@
             <ns3:process-name>aic2</ns3:process-name>
             <ns3:file-path>orderProcess.bpel</ns3:file-path>
         </provides>
-        <consumes endpoint-name="CustomerManagementSoapRole_partnerRole" interface-name="ns1:CustomerManagementSoap" service-name="ns0:PartnerLink2">
+        <consumes endpoint-name="CustomerManagementSoapRole_partnerRole" interface-name="ns1:CustomerManagementSoap" service-name="ns0:CustomerManagement">
+            <ns3:display-name>CustomerManagement</ns3:display-name>
+            <ns3:process-name>aic2</ns3:process-name>
+            <ns3:file-path>orderProcess.bpel</ns3:file-path>
+        </consumes>
+        <consumes endpoint-name="IOrderManagementServiceRole_partnerRole" interface-name="ns1:IOrderManagementService" service-name="ns0:OrderManagement">
+            <ns3:display-name>OrderManagement</ns3:display-name>
+            <ns3:process-name>aic2</ns3:process-name>
+            <ns3:file-path>orderProcess.bpel</ns3:file-path>
+        </consumes>
+        <consumes endpoint-name="INotifyRole_partnerRole" interface-name="ns1:INotify" service-name="ns0:PartnerLink2">
             <ns3:display-name>PartnerLink2</ns3:display-name>
             <ns3:process-name>aic2</ns3:process-name>
             <ns3:file-path>orderProcess.bpel</ns3:file-path>

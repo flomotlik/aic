@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="INotify" targetNamespace="http://services.aic666.tuwien.at/" xmlns:ns1="http://services.aic666.tuwien.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://services.aic666.tuwien.at/" version="1.0" xmlns:tns="http://services.aic666.tuwien.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="notifyCustomer" type="tns:notifyCustomer" />
+<xs:element name="notifyCustomerResponse" type="tns:notifyCustomerResponse" />
+<xs:element name="payment-preference" type="tns:paymentPreference" />
+<xs:complexType name="notifyCustomer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:customer" />
+<xs:element minOccurs="0" name="arg1" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="preference" type="tns:paymentPreference" />
+<xs:element minOccurs="0" name="address" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="notifyCustomerResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="paymentPreference">
+<xs:restriction base="xs:string">
+<xs:enumeration value="credit-card" />
+<xs:enumeration value="bank-transfer" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="notifyCustomerResponse">
+    <wsdl:part element="ns1:notifyCustomerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyCustomer">
+    <wsdl:part element="ns1:notifyCustomer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="INotify">
+    <wsdl:operation name="notifyCustomer">
+      <wsdl:input message="ns1:notifyCustomer" name="notifyCustomer">
+    </wsdl:input>
+      <wsdl:output message="ns1:notifyCustomerResponse" name="notifyCustomerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

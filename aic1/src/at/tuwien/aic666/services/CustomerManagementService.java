@@ -2,6 +2,7 @@ package at.tuwien.aic666.services;
 
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.persistence.DataBaseMock;
+import at.tuwien.aic666.util.UnknownCustomerFault;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -50,7 +51,11 @@ public class CustomerManagementService implements CustomerManagement {
     @Produces({"application/json", "application/xml"})
     public Customer getCustomer(@PathParam("id") String id) {
         System.out.println("Retrieving info for customer " + id);
-        return this.db.getCustomerById(id);
+        Customer c = this.db.getCustomerById(id);
+        if (c == null) {
+            throw new UnknownCustomerFault("Customer with " + id + " is unknown");
+        }
+        return c;
     }
 
     @POST

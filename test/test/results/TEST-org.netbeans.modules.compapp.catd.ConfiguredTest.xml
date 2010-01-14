@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="v254-221.vps.tuwien.ac.at" name="org.netbeans.modules.compapp.catd.ConfiguredTest" tests="1" time="0.252" timestamp="2010-01-13T15:54:48">
+<testsuite errors="0" failures="1" hostname="v254-110.vps.tuwien.ac.at" name="org.netbeans.modules.compapp.catd.ConfiguredTest" tests="1" time="1.935" timestamp="2010-01-14T13:49:58">
   <properties>
     <property name="netbeans.autoupdate.country" value="US" />
     <property name="com.sun.jbi.sa.internal.routing" value="true" />
@@ -142,7 +142,7 @@
     <property name="libs.proguard.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/mobility8/external/proguard/proguard4.2.jar" />
     <property name="gopherProxySet" value="false" />
     <property name="libs.DataBindingME-SVG.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/mobility8/modules/ext/netbeans_databindingme_svg.jar" />
-    <property name="https.nonProxyHosts" value="localhost|127.0.0.1|v254-221.vps.tuwien.ac.at" />
+    <property name="https.nonProxyHosts" value="localhost|127.0.0.1|v254-110.vps.tuwien.ac.at" />
     <property name="libs.PostgreSQLDriver.maven-pom" value="" />
     <property name="java.class.version" value="50.0" />
     <property name="project.aic2" value="../aic2" />
@@ -174,7 +174,7 @@
     <property name="libs.nsicom-ant-utils.maven-pom" value="" />
     <property name="libs.MySQLDriver.maven-pom" value="" />
     <property name="libs.savaje-ant-utils.src" value="" />
-    <property name="http.nonProxyHosts" value="localhost|127.0.0.1|v254-221.vps.tuwien.ac.at" />
+    <property name="http.nonProxyHosts" value="localhost|127.0.0.1|v254-110.vps.tuwien.ac.at" />
     <property name="libs.junit_4.javadoc" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2/docs/junit-4.5-api.zip" />
     <property name="libs.spring-webmvc.javadoc" value="" />
     <property name="libs.toplink.src" value="" />
@@ -265,7 +265,6 @@
     <property name="libs.jaxb.src" value="" />
     <property name="libs.cdc-ant-utils.src" value="" />
     <property name="libs.jaxb.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/activation.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/api/jaxb-api.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/jaxb-impl.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/jaxb-xjc.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/api/jsr173_api.jar" />
-    <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.NoOpLog" />
     <property name="libs.swing-layout.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/platform10/modules/ext/swing-layout-1.0.3.jar" />
     <property name="libs.restlib.src" value="" />
     <property name="build.generated.dir" value="build/generated" />
@@ -317,8 +316,8 @@
     <property name="netbeans.dirs" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/nb6.7:/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11:/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2:/opt/ESB/netbeans.app/Contents/Resources/netbeans/xml2:/opt/ESB/netbeans.app/Contents/Resources/netbeans/apisupport1:/opt/ESB/netbeans.app/Contents/Resources/netbeans/webcommon1:/opt/ESB/netbeans.app/Contents/Resources/netbeans/websvccommon1:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5:/opt/ESB/netbeans.app/Contents/Resources/netbeans/mobility8:/opt/ESB/netbeans.app/Contents/Resources/netbeans/profiler3:./../ruby2:./../python1:./../php1:./../visualweb2:/opt/ESB/netbeans.app/Contents/Resources/netbeans/soa2:/opt/ESB/netbeans.app/Contents/Resources/netbeans/identity2:./../uml6:/opt/ESB/netbeans.app/Contents/Resources/netbeans/harness:./../cnd2:./../dlight1:./../groovy1:./../extra:./../javafx2:./../{ide-cluster}:./../{xml-cluster}:" />
     <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home/lib/ext" />
     <property name="libs.metro.src" value="" />
-    <property name="libs.semc-ant-utils.src" value="" />
     <property name="libs.savaje-ant-utils.maven-pom" value="" />
+    <property name="libs.semc-ant-utils.src" value="" />
     <property name="libs.absolutelayout.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2/modules/ext/AbsoluteLayout.jar" />
     <property name="libs.metro.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/ide11/modules/ext/jaxb/activation.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/modules/ext/metro/webservices-api.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/modules/ext/metro/webservices-extra-api.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/modules/ext/metro/webservices-extra.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/modules/ext/metro/webservices-rt.jar:/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/modules/ext/metro/webservices-tools.jar" />
     <property name="libs.restlib.maven-pom" value="" />
@@ -336,8 +335,8 @@
     <property name="libs.ricoh-ant-utils.javadoc" value="" />
     <property name="libs.NetBeans MIDP Components PDA.maven-pom" value="" />
     <property name="libs.restlib.javadoc" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/enterprise5/docs/jersey-api-doc.zip" />
-    <property name="libs.beans-binding.javadoc" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2/docs/beansbinding-1.2.1-doc.zip" />
     <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
+    <property name="libs.beans-binding.javadoc" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2/docs/beansbinding-1.2.1-doc.zip" />
     <property name="java.vm.vendor" value="Apple Inc." />
     <property name="libs.CopyLibs.classpath" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/java2/ant/extra/org-netbeans-modules-java-j2seproject-copylibstask.jar" />
     <property name="libs.spring-webmvc.maven-pom" value="" />
@@ -351,14 +350,14 @@
     <property name="soa.module.install.dir" value="/opt/ESB/netbeans.app/Contents/Resources/netbeans/soa2/modules" />
     <property name="libs.Encoder-Custom.src" value="" />
     <property name="libs.junit.src" value="" />
-    <property name="build.dir" value="build" />
     <property name="libs.CopyLibs.src" value="" />
+    <property name="build.dir" value="build" />
     <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
     <property name="file.encoding" value="MacRoman" />
     <property name="awt.toolkit" value="apple.awt.CToolkit" />
   </properties>
-  <testcase classname="org.netbeans.modules.compapp.catd.ConfiguredTest" name="TestCase1" time="0.23">
-    <failure message="[Jan 13, 2010 4:54:48 PM] The response is not identical to the expected output." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: [Jan 13, 2010 4:54:48 PM] The response is not identical to the expected output.
+  <testcase classname="org.netbeans.modules.compapp.catd.ConfiguredTest" name="TestCase1" time="1.912">
+    <failure message="[Jan 14, 2010 2:50:00 PM] The response is not identical to the expected output." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: [Jan 14, 2010 2:50:00 PM] The response is not identical to the expected output.
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.checkExpectedOutput(ConfiguredTest.java:2348)
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.checkExpectedOutput(ConfiguredTest.java:2218)
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.testConcurrentSOAPRequest(ConfiguredTest.java:862)
@@ -423,7 +422,12 @@ user.home=/Users/peter
 user.language=en
 user.name=root
 user.timezone=Europe/Vienna
-Test TestCase1\Concurrent.properties Failed. (Destination: http://localhost:9080/OrderProcessService/OrderProcessPort)
+Test TestCase1\Concurrent.properties
+  * Difference (Delete): result
+  * Difference (Add): SOAP-ENV:Fault
+ Failed. (Destination: http://localhost:9080/OrderProcessService/OrderProcessPort)
 ]]></system-out>
-  <system-err><![CDATA[]]></system-err>
+  <system-err><![CDATA[Jan 14, 2010 2:49:59 PM org.netbeans.modules.editor.settings.storage.keybindings.KeyMapsStorage$KeyMapsReader startElement
+WARNING: Duplicate shortcut 'D-SPACE' definition; rebound from 'all-completion-show' to 'completion-show' in (Editors/Keybindings/NetBeans/Defaults/org-netbeans-modules-editor-keybindings.xml).
+]]></system-err>
 </testsuite>

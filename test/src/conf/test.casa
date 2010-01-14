@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://enterprise.netbeans.org/bpel/aic2/aic2" xmlns:ns2="http://infosys.tuwien.ac.at/ait09/ass2/process" xmlns:ns3="http://services.aic666.tuwien.at/" xmlns:xlink="http://www.w3.org/2000/xlink">
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="http://services.aic666.tuwien.at/" xmlns:ns2="http://infosys.tuwien.ac.at/ait09/ass1/dto/notification" xmlns:ns3="http://infosys.tuwien.ac.at/ait09/ass2/process" xmlns:ns4="http://enterprise.netbeans.org/bpel/aic2/aic2" xmlns:xlink="http://www.w3.org/2000/xlink">
     <endpoints>
-        <endpoint display-name="PartnerLink1" endpoint-name="OrderProcessProvider_myRole" file-path="orderProcess.bpel" interface-name="ns2:OrderProcessPortType" name="endpoint1" process-name="aic2" service-name="ns1:PartnerLink1"/>
-        <endpoint display-name="PartnerLink2" endpoint-name="CustomerManagementSoapRole_partnerRole" file-path="orderProcess.bpel" interface-name="ns3:CustomerManagementSoap" name="endpoint2" process-name="aic2" service-name="ns1:PartnerLink2"/>
-        <endpoint endpoint-name="CustomerManagementServiceSoapPort" interface-name="ns3:CustomerManagementSoap" name="endpoint3" service-name="ns3:CustomerManagementServiceSoap"/>
-        <endpoint endpoint-name="OrderProcessPort" interface-name="ns2:OrderProcessPortType" name="endpoint4" service-name="ns2:OrderProcessService"/>
+        <endpoint endpoint-name="CustomerManagementServiceSoapPort" interface-name="ns1:CustomerManagementSoap" name="endpoint1" service-name="ns1:CustomerManagementServiceSoap"/>
+        <endpoint endpoint-name="OrderManagementServicePort" interface-name="ns1:IOrderManagementService" name="endpoint2" service-name="ns1:OrderManagementService"/>
+        <endpoint endpoint-name="NotificationPT" interface-name="ns1:INotify" name="endpoint3" service-name="ns2:NotificationService"/>
+        <endpoint endpoint-name="OrderProcessPort" interface-name="ns3:OrderProcessPortType" name="endpoint4" service-name="ns3:OrderProcessService"/>
+        <endpoint display-name="PartnerLink1" endpoint-name="OrderProcessProvider_myRole" file-path="orderProcess.bpel" interface-name="ns3:OrderProcessPortType" name="endpoint5" process-name="aic2" service-name="ns4:PartnerLink1"/>
+        <endpoint display-name="CustomerManagement" endpoint-name="CustomerManagementSoapRole_partnerRole" file-path="orderProcess.bpel" interface-name="ns1:CustomerManagementSoap" name="endpoint6" process-name="aic2" service-name="ns4:CustomerManagement"/>
+        <endpoint display-name="OrderManagement" endpoint-name="IOrderManagementServiceRole_partnerRole" file-path="orderProcess.bpel" interface-name="ns1:IOrderManagementService" name="endpoint7" process-name="aic2" service-name="ns4:OrderManagement"/>
+        <endpoint display-name="PartnerLink2" endpoint-name="INotifyRole_partnerRole" file-path="orderProcess.bpel" interface-name="ns1:INotify" name="endpoint8" process-name="aic2" service-name="ns4:PartnerLink2"/>
     </endpoints>
     <service-units>
-        <service-engine-service-unit artifacts-zip="aic2.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="test-aic2" unit-name="aic2" unknown="false" x="171" y="97">
-            <provides endpoint="endpoint1"/>
-            <consumes endpoint="endpoint2"/>
+        <service-engine-service-unit artifacts-zip="aic2.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="test-aic2" unit-name="aic2" unknown="false" x="155" y="97">
+            <provides endpoint="endpoint5"/>
+            <consumes endpoint="endpoint6"/>
+            <consumes endpoint="endpoint7"/>
+            <consumes endpoint="endpoint8"/>
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="test-sun-http-binding" unit-name="sun-http-binding">
             <ports>
-                <port x="0" y="-1">
+                <port x="67" y="268">
+                    <link xlink:href="../jbiServiceUnits/aic2/localhost_8083/orderservice.wsdl#xpointer(/definitions/service[@name='OrderManagementService']/port[@name='OrderManagementServicePort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint2"/>
+                    <provides endpoint="endpoint2"/>
+                </port>
+                <port x="67" y="191">
                     <link xlink:href="../jbiServiceUnits/aic2/localhost_8086/customersoap.wsdl#xpointer(/definitions/service[@name='CustomerManagementServiceSoap']/port[@name='CustomerManagementServiceSoapPort'])" xlink:type="simple"/>
+                    <consumes endpoint="endpoint1"/>
+                    <provides endpoint="endpoint1"/>
+                </port>
+                <port x="67" y="114">
+                    <link xlink:href="../jbiServiceUnits/aic2/localhost_8088/smsservice.wsdl#xpointer(/definitions/service[@name='NotificationService']/port[@name='NotificationPT'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint3"/>
                     <provides endpoint="endpoint3"/>
                 </port>
-                <port x="0" y="-1">
+                <port x="67" y="37">
                     <link xlink:href="../jbiServiceUnits/aic2/OrderProcess.wsdl#xpointer(/definitions/service[@name='OrderProcessService']/port[@name='OrderProcessPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint4"/>
                     <provides endpoint="endpoint4"/>
@@ -27,19 +43,27 @@
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint2" provider="endpoint3" state="unchanged"/>
-        <connection consumer="endpoint4" provider="endpoint1" state="unchanged"/>
+        <connection consumer="endpoint6" provider="endpoint1" state="unchanged"/>
+        <connection consumer="endpoint7" provider="endpoint2" state="unchanged"/>
+        <connection consumer="endpoint8" provider="endpoint3" state="unchanged"/>
+        <connection consumer="endpoint4" provider="endpoint5" state="unchanged"/>
     </connections>
     <porttypes>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8083/orderservice.wsdl#xpointer(/definitions/portType[@name='IOrderManagementService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/localhost_8086/customersoap.wsdl#xpointer(/definitions/portType[@name='CustomerManagementSoap'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8088/smsservice.wsdl_INotify.wsdl#xpointer(/definitions/portType[@name='INotify'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/OrderProcess.wsdl#xpointer(/definitions/portType[@name='OrderProcessPortType'])" xlink:type="simple"/>
     </porttypes>
     <bindings>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8083/orderservice.wsdl#xpointer(/definitions/binding[@name='OrderManagementServiceSoapBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/localhost_8086/customersoap.wsdl#xpointer(/definitions/binding[@name='CustomerManagementServiceSoapSoapBinding'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8088/smsservice.wsdl#xpointer(/definitions/binding[@name='NotificationServiceSoapBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/OrderProcess.wsdl#xpointer(/definitions/binding[@name='OrderProcessBinding'])" xlink:type="simple"/>
     </bindings>
     <services>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8083/orderservice.wsdl#xpointer(/definitions/service[@name='OrderManagementService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/localhost_8086/customersoap.wsdl#xpointer(/definitions/service[@name='CustomerManagementServiceSoap'])" xlink:type="simple"/>
+        <link xlink:href="../jbiServiceUnits/aic2/localhost_8088/smsservice.wsdl#xpointer(/definitions/service[@name='NotificationService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/aic2/OrderProcess.wsdl#xpointer(/definitions/service[@name='OrderProcessService'])" xlink:type="simple"/>
     </services>
     <regions>

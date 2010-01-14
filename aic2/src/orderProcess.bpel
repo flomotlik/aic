@@ -8,44 +8,222 @@
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema" xmlns:ns1="http://services.aic666.tuwien.at/">
     <import namespace="http://infosys.tuwien.ac.at/ait09/ass2/process" location="file:/Users/peter/Documents/TU/SEIC/2.Sem/AIC/Assignment2/OrderProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/customersoapWrapper" location="customersoapWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://services.aic666.tuwien.at/" location="http://localhost:8086/customersoap?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/orderserviceWrapper" location="orderserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://services.aic666.tuwien.at/" location="http://localhost:8083/orderservice?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/smsserviceWrapper" location="smsserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://infosys.tuwien.ac.at/ait09/ass1/dto/notification" location="http://localhost:8088/smsservice?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://services.aic666.tuwien.at/" location="http://localhost:8088/smsservice?wsdl=INotify.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/customersoapWrapper" partnerLinkType="tns:CustomerManagementSoapLinkType" partnerRole="CustomerManagementSoapRole"/>
+        <partnerLink name="CustomerManagement" xmlns:tns="http://enterprise.netbeans.org/bpel/customersoapWrapper" partnerLinkType="tns:CustomerManagementSoapLinkType" partnerRole="CustomerManagementSoapRole"/>
+        <partnerLink name="OrderManagement" xmlns:tns="http://enterprise.netbeans.org/bpel/orderserviceWrapper" partnerLinkType="tns:IOrderManagementServiceLinkType" partnerRole="IOrderManagementServiceRole"/>
+        <partnerLink name="PartnerLink2" xmlns:tns="http://enterprise.netbeans.org/bpel/smsserviceWrapper" partnerLinkType="tns:INotifyLinkType" partnerRole="INotifyRole"/>
         <partnerLink name="PartnerLink1" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" partnerLinkType="tns:OrderProcessLinkType" myRole="OrderProcessProvider"/>
     </partnerLinks>
     <variables>
+        <variable name="PlaceOrderOut" messageType="ns1:placeOrderResponse"/>
+        <variable name="PlaceOrderIn" messageType="ns1:placeOrder"/>
+        <variable name="NotifyCustomerOut" messageType="ns1:notifyCustomerResponse"/>
+        <variable name="NotifyCustomerIn" messageType="ns1:notifyCustomer"/>
+        <variable name="CheckAvailabilityOut" xmlns:tns="http://services.aic666.tuwien.at/" messageType="tns:checkAvailabilityResponse"/>
+        <variable name="CheckAvailabilityIn" xmlns:tns="http://services.aic666.tuwien.at/" messageType="tns:checkAvailability"/>
         <variable name="GetCustomerOut" xmlns:tns="http://services.aic666.tuwien.at/" messageType="tns:getCustomerResponse"/>
         <variable name="GetCustomerIn" xmlns:tns="http://services.aic666.tuwien.at/" messageType="tns:getCustomer"/>
         <variable name="Start_processIn" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" messageType="tns:start_process_request"/>
         <variable name="Start_processOut" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" messageType="tns:start_process_response"/>
+        <variable name="allAvailable" type="xsd:boolean" />
     </variables>
     <sequence>
-        <receive name="Receive1" createInstance="yes" partnerLink="PartnerLink1" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processIn"/>
-        <forEach name="ForEach1" parallel="no" counterName="i">
+        <receive name="ReceiveInput" createInstance="yes" partnerLink="PartnerLink1" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processIn"/>
+        <forEach name="ForEachCustomer" parallel="no" counterName="i">
             <startCounterValue>1</startCounterValue>
             <finalCounterValue>count($Start_processIn.part1/ns0:order)</finalCounterValue>
             <scope name="Scope1">
+                <faultHandlers>
+                    <catchAll>
+                        <assign name="Assign9">
+                        <!--    <copy>
+                                <from>$i + 1</from>
+                                <to variable="i"/>
+                            </copy>-->
+                            <copy>
+                                <from>'false'</from>
+                                <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success</to>
+                            </copy>
+                            <copy>
+                                <from>concat('UnknowCustomerFault: ', $Start_processIn.part1/ns0:order[$i]/@customerID)</from>
+                                <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:info
+                                    <sxed2:editor>
+                                        <sxed2:predicate path="$Start_processOut.part1/ns0:placed_order[$i]" source="to"/>
+                                    </sxed2:editor>
+                                </to>
+                            </copy>
+                            <copy>
+                                <from>'false'</from>
+                                <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success
+                                    <sxed2:editor>
+                                        <sxed2:predicate path="$Start_processOut.part1/ns0:placed_order[$i]" source="to"/>
+                                    </sxed2:editor>
+                                </to>
+                            </copy>
+                        </assign>
+                    </catchAll>
+                </faultHandlers>
                 <sequence name="Sequence1">
-                    <assign name="Assign1">
+                    <assign name="assignCustomerId">
                         <copy>
                             <from>$Start_processIn.part1/ns0:order[position() = $i]/@customerID</from>
                             <to>$GetCustomerIn.parameters/arg0</to>
                         </copy>
                     </assign>
-                    <invoke name="Invoke1" partnerLink="PartnerLink2" operation="getCustomer" xmlns:tns="http://services.aic666.tuwien.at/" portType="tns:CustomerManagementSoap" inputVariable="GetCustomerIn" outputVariable="GetCustomerOut"/>
-                    <assign name="Assign2">
+                    <invoke name="getCustomer" partnerLink="CustomerManagement" operation="getCustomer" xmlns:tns="http://services.aic666.tuwien.at/" portType="tns:CustomerManagementSoap" inputVariable="GetCustomerIn" outputVariable="GetCustomerOut"></invoke>
+                    <assign name="initAvail">
                         <copy>
-                            <from>$GetCustomerOut.parameters/return/name</from>
-                            <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:info</to>
+                            <from>true()</from>
+                            <to variable="allAvailable"/>
                         </copy>
                     </assign>
+                    <forEach name="ForEachItem" parallel="no" counterName="item">
+                        <startCounterValue>1</startCounterValue>
+                        <finalCounterValue>count($Start_processIn.part1/ns0:order[$i]/ns0:item)</finalCounterValue>
+                        <scope name="Scope2">
+                            <sequence name="Sequence2">
+                                <assign name="assingItem">
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:quantity
+                                        </from>
+                                        <to>$CheckAvailabilityIn.parameters/arg0/quantity</to>
+                                    </copy>
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:singleUnitPrice</from>
+                                        <to>$CheckAvailabilityIn.parameters/arg0/singleUnitPrice</to>
+                                    </copy>
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/@productID</from>
+                                        <to>$CheckAvailabilityIn.parameters/arg0/@id</to>
+                                    </copy>
+                                </assign>
+                                <invoke name="checkAvailability" partnerLink="OrderManagement" operation="checkAvailability" portType="ns1:IOrderManagementService" inputVariable="CheckAvailabilityIn" outputVariable="CheckAvailabilityOut"/>
+                                <if name="if_not_available">
+                                    <condition>not(boolean($CheckAvailabilityOut.parameters/return))</condition>
+                                    <sequence name="Sequence3">
+                                        <assign name="assignNotification">
+                                            <copy>
+                                                <from>$GetCustomerOut.parameters/return</from>
+                                                <to>$NotifyCustomerIn.parameters/arg0</to>
+                                            </copy>
+                                            <copy>
+                                                <from>'Item is not available'</from>
+                                                <to>$NotifyCustomerIn.parameters/arg1</to>
+                                            </copy>
+                                            <copy>
+                                                <from>false()</from>
+                                                <to variable="allAvailable" />
+                                            </copy>
+                                            <copy>
+                                                <from>concat('Item with id ', $Start_processIn.part1/ns0:order/ns0:item/@productID, ' is not available')</from>
+                                                <to>$Start_processOut.part1/ns0:placed_order/ns0:info</to>
+                                            </copy>
+                                        </assign>
+                                        <invoke name="notify" partnerLink="PartnerLink2" operation="notifyCustomer" portType="ns1:INotify" inputVariable="NotifyCustomerIn" outputVariable="NotifyCustomerOut"/>
+                                    </sequence>
+                                    <else>
+                                        <assign name="Assign5">
+                                            <copy>
+                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:quantity
+                                                </from>
+                                                <to>$PlaceOrderIn.parameters/arg0[$item]/quantity
+                                                </to>
+                                            </copy>
+                                            <copy>
+                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:singleUnitPrice
+                                                </from>
+                                                <to>$PlaceOrderIn.parameters/arg0[$item]/singleUnitPrice
+                                                </to>
+                                            </copy>
+                                            <copy>
+                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/@productID
+                                                </from>
+                                                <to>$PlaceOrderIn.parameters/arg0[$item]/@id
+                                                </to>
+                                            </copy>
+                                        </assign>
+                                    </else>
+                                </if>
+                            </sequence>
+                        </scope>
+                    </forEach>
+                    <if name="If1">
+                        <condition>$allAvailable</condition>
+                        <sequence name="Sequence4">
+                            <assign name="Assign7">
+                                <copy>
+                                    <from>$GetCustomerOut.parameters/return</from>
+                                    <to>$PlaceOrderIn.parameters/arg1</to>
+                                </copy>
+                            </assign>
+                            <invoke name="Invoke4" partnerLink="OrderManagement" operation="placeOrder" portType="ns1:IOrderManagementService" inputVariable="PlaceOrderIn" outputVariable="PlaceOrderOut"></invoke>
+                            <assign name="Assign6">
+                                <copy>
+                                    <from>$PlaceOrderOut.parameters/return/@id</from>
+                                    <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:orderID</to>
+                                </copy>
+                                <copy>
+                                    <from>'true'</from>
+                                    <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success
+                                    </to>
+                                </copy>
+                            </assign>
+                        </sequence>
+                        <else>
+                            <assign name="Assign8">
+                                <copy>
+                                    <from variable="allAvailable"/>
+                                    <to>$Start_processOut.part1/ns0:placed_order/ns0:success</to>
+                                </copy>
+                            </assign>
+                        </else>
+                    </if>
                 </sequence>
             </scope>
         </forEach>
         <reply name="Reply1" partnerLink="PartnerLink1" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

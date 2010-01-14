@@ -107,7 +107,7 @@ public class OrderManagementService implements IOrderManagementService {
         item1.setProductId("item1");
         item2.setProductId("item2");
 
-        this.db.increaseItemsAvailable(item1, 5);
+        this.db.increaseItemsAvailable(item1, 105);
         this.db.increaseItemsAvailable(item2, 3);
         this.db.setCustomers(customers);
 
