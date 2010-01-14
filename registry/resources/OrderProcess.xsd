@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema"
+            xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema"
+            elementFormDefault="qualified">
+
+    <xs:element name="parameters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="unbounded" name="order" type="tns:order"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="order">
+        <xs:sequence>
+            <xs:element minOccurs="1" maxOccurs="unbounded" name="item" type="tns:item"/>
+        </xs:sequence>
+        <xs:attribute name="customerID" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="item">
+        <xs:sequence>
+            <xs:element name="quantity" type="xs:int"/>
+            <xs:element name="singleUnitPrice" type="xs:decimal"/>
+        </xs:sequence>
+        <xs:attribute name="productID" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:element name="result">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="1" maxOccurs="unbounded" name="placed_order" type="tns:placed_order"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="placed_order">
+        <xs:sequence>
+            <xs:element name="success" type="xs:boolean"/>
+            <xs:element name="orderID" type="xs:string" minOccurs="0"/>
+            <xs:element name="info" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="BooleanSequence">
+        <xs:sequence>
+            <xs:element name="flag" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

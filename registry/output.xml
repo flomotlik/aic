@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:refType xmlns="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:ns2="http://www.infosys.tuwien.ac.at/ait09/registry">
+    <EndpointReference>
+        <Address>localhost:irgendwas</Address>
+        <ns3:PortType xmlns:ns3="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns="">Name</ns3:PortType>
+        <ns3:ServiceName xmlns:ns3="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns="" PortName="ServiceNamePortName">Value</ns3:ServiceName>
+    </EndpointReference>
+</ns2:refType>

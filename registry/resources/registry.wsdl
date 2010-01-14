@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ServiceRegistry" targetNamespace="http://www.infosys.tuwien.ac.at/ait09/registry"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.infosys.tuwien.ac.at/ait09/registry"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"> 
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://www.infosys.tuwien.ac.at/ait09/registry">
+            <xsd:import schemaLocation="addressing.xsd" namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+            <xsd:element name="Reference" type="tns:RefType"/>
+            <xsd:complexType name="RefType">
+                 <xsd:sequence>
+                    <xsd:element ref="wsa:EndpointReference"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="Customer" type="tns:CustomerType"/>
+            <xsd:complexType name="CustomerType">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:string"/>
+                    <xsd:element name="name" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="QueryRequest">
+        <wsdl:part name="parameters" element="tns:Customer"/>
+    </wsdl:message>
+    <wsdl:message name="QueryResponse">
+        <wsdl:part name="response" element="tns:Reference"/>
+    </wsdl:message>
+    <wsdl:portType name="RegistryService">
+        <wsdl:operation name="query_notification_service">
+            <wsdl:input name="input" message="tns:QueryRequest"/>
+            <wsdl:output name="output" message="tns:QueryResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="RegistryPartnerBinding" type="tns:RegistryService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="query_notification_service">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="input">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="output">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+  <wsdl:service name="RegistryService">
+    <wsdl:port binding="tns:RegistryPartnerBinding" name="RegistryServicePort">
+      <soap:address location="http://localhost:8087/registry"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

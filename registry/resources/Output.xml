@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+	xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/
+                        http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema OrderProcess.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:ord="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema">
+  <soapenv:Body>
+    <ord:result>
+        <ord:placed_order>
+            <ord:success>true</ord:success>
+            <ord:orderID>a7e75ce8-140d-472f-a2fd-06d226bb8e47</ord:orderID>
+            <ord:info></ord:info>
+        </ord:placed_order>
+        <ord:placed_order>
+            <ord:success>false</ord:success>
+            <ord:info>UnknownCustomerException: cafecafe-c777-4c61-99c1-bfa0ad848889</ord:info>
+        </ord:placed_order>
+        <ord:placed_order>
+            <ord:success>false</ord:success>
+            <ord:info>UnknownItemException: cafecafe-c777-4c61-99c1-bfa0ad848889</ord:info>
+        </ord:placed_order>
+        <ord:placed_order>
+            <ord:success>false</ord:success>
+            <ord:info>Item 7980517a-c777-4c61-99c1-bfa0ad848889 not available\n</ord:info>
+        </ord:placed_order>
+        <ord:placed_order>
+            <ord:success>true</ord:success>
+            <ord:orderID>259402ec-ca15-4654-8936-58d64b32b01e</ord:orderID>
+            <ord:info></ord:info>
+        </ord:placed_order>
+    </ord:result>
+  </soapenv:Body>
+</soapenv:Envelope>

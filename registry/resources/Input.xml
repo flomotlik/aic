@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope 
+	xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/
+                        http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema OrderProcess.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:ord="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema">
+  <soapenv:Body>
+      <!-- TODO adjust to own test data -->
+    <ord:parameters>
+        <!-- standard order (several different items) -->
+		<ord:order customerID="6980517a-c777-4c61-99c1-bfa0ad848889">
+			<ord:item productID="7980517a-c777-4c61-99c1-bfa0ad848889">
+				<ord:quantity>3</ord:quantity>
+                <!-- single unit price can be ignored, if not necessary for ordering -->
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+			<ord:item productID="dafc1d06-3e7e-4d12-b645-d793e1b9f24c">
+				<ord:quantity>5</ord:quantity>
+				<ord:singleUnitPrice>10.00</ord:singleUnitPrice>
+			</ord:item>
+			<ord:item productID="ef540734-0a47-454e-b850-63bf1acf44e9">
+				<ord:quantity>10</ord:quantity>
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+		</ord:order>
+        <!-- invalid order (unknown customer) -->
+        <ord:order customerID="cafecafe-c777-4c61-99c1-bfa0ad848889">
+			<ord:item productID="7980517a-c777-4c61-99c1-bfa0ad848889">
+				<ord:quantity>1</ord:quantity>
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+		</ord:order>
+        <!-- invalid order (unknown item) -->
+        <ord:order customerID="6980517a-c777-4c61-99c1-bfa0ad848889">
+			<ord:item productID="cafecafe-c777-4c61-99c1-bfa0ad848889">
+				<ord:quantity>1</ord:quantity>
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+		</ord:order>
+        <!-- invalid order (item not available) -->
+        <ord:order customerID="6980517a-c777-4c61-99c1-bfa0ad848889">
+			<ord:item productID="7980517a-c777-4c61-99c1-bfa0ad848889">
+				<ord:quantity>100</ord:quantity>
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+		</ord:order>
+        <!-- another order (only one item) -->
+        <ord:order customerID="d5596197-f737-49dd-8e68-d9be313f832c">
+			<ord:item productID="7980517a-c777-4c61-99c1-bfa0ad848889">
+				<ord:quantity>1</ord:quantity>
+				<ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+			</ord:item>
+		</ord:order>
+    </ord:parameters>
+  </soapenv:Body>
+</soapenv:Envelope>
