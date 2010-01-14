@@ -24,8 +24,6 @@
         <partnerLink name="PartnerLink1" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" partnerLinkType="tns:OrderProcessLinkType" myRole="OrderProcessProvider"/>
     </partnerLinks>
     <variables>
-        <variable name="PlaceOrderOut" messageType="ns1:placeOrderResponse"/>
-        <variable name="PlaceOrderIn" messageType="ns1:placeOrder"/>
         <variable name="NotifyCustomerOut" messageType="ns1:notifyCustomerResponse"/>
         <variable name="NotifyCustomerIn" messageType="ns1:notifyCustomer"/>
         <variable name="CheckAvailabilityOut" xmlns:tns="http://services.aic666.tuwien.at/" messageType="tns:checkAvailabilityResponse"/>
@@ -42,13 +40,13 @@
             <startCounterValue>1</startCounterValue>
             <finalCounterValue>count($Start_processIn.part1/ns0:order)</finalCounterValue>
             <scope name="Scope1">
+                <variables>
+                    <variable name="PlaceOrderOut" messageType="ns1:placeOrderResponse"/>
+                    <variable name="PlaceOrderIn" messageType="ns1:placeOrder"/>
+                </variables>
                 <faultHandlers>
                     <catchAll>
-                        <assign name="Assign9">
-                        <!--    <copy>
-                                <from>$i + 1</from>
-                                <to variable="i"/>
-                            </copy>-->
+                        <assign name="CustomerUnknown">
                             <copy>
                                 <from>'false'</from>
                                 <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success</to>
@@ -56,17 +54,12 @@
                             <copy>
                                 <from>concat('UnknowCustomerFault: ', $Start_processIn.part1/ns0:order[$i]/@customerID)</from>
                                 <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:info
-                                    <sxed2:editor>
-                                        <sxed2:predicate path="$Start_processOut.part1/ns0:placed_order[$i]" source="to"/>
-                                    </sxed2:editor>
+                                   
                                 </to>
                             </copy>
                             <copy>
                                 <from>'false'</from>
                                 <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success
-                                    <sxed2:editor>
-                                        <sxed2:predicate path="$Start_processOut.part1/ns0:placed_order[$i]" source="to"/>
-                                    </sxed2:editor>
                                 </to>
                             </copy>
                         </assign>
@@ -90,6 +83,24 @@
                         <startCounterValue>1</startCounterValue>
                         <finalCounterValue>count($Start_processIn.part1/ns0:order[$i]/ns0:item)</finalCounterValue>
                         <scope name="Scope2">
+                            <faultHandlers>
+                                <catchAll>
+                                    <assign name="ItemUnknown">
+                                        <copy>
+                                            <from>'false'</from>
+                                            <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success</to>
+                                        </copy>
+                                        <copy>
+                                            <from>concat('Unknown Item: ', $CheckAvailabilityIn.parameters/arg0/@id)</from>
+                                            <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:info</to>
+                                        </copy>
+                                        <copy>
+                                            <from>false()</from>
+                                            <to variable="allAvailable"/>
+                                        </copy>
+                                    </assign>
+                                </catchAll>
+                            </faultHandlers>
                             <sequence name="Sequence2">
                                 <assign name="assingItem">
                                     <copy>
@@ -124,49 +135,44 @@
                                                 <to variable="allAvailable" />
                                             </copy>
                                             <copy>
-                                                <from>concat('Item with id ', $Start_processIn.part1/ns0:order/ns0:item/@productID, ' is not available')</from>
-                                                <to>$Start_processOut.part1/ns0:placed_order/ns0:info</to>
+                                                <from>concat('Item with id ', $Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/@productID, ' is not available')</from>
+                                                <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:info</to>
                                             </copy>
                                         </assign>
                                         <invoke name="notify" partnerLink="PartnerLink2" operation="notifyCustomer" portType="ns1:INotify" inputVariable="NotifyCustomerIn" outputVariable="NotifyCustomerOut"/>
                                     </sequence>
-                                    <else>
-                                        <assign name="Assign5">
-                                            <copy>
-                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:quantity
-                                                </from>
-                                                <to>$PlaceOrderIn.parameters/arg0[$item]/quantity
-                                                </to>
-                                            </copy>
-                                            <copy>
-                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:singleUnitPrice
-                                                </from>
-                                                <to>$PlaceOrderIn.parameters/arg0[$item]/singleUnitPrice
-                                                </to>
-                                            </copy>
-                                            <copy>
-                                                <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/@productID
-                                                </from>
-                                                <to>$PlaceOrderIn.parameters/arg0[$item]/@id
-                                                </to>
-                                            </copy>
-                                        </assign>
-                                    </else>
                                 </if>
+                                <assign name="setItem">
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:quantity
+                                        </from>
+                                        <to>$PlaceOrderIn.parameters/arg0[$item]/quantity</to>
+                                    </copy>
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/ns0:singleUnitPrice
+                                        </from>
+                                        <to>$PlaceOrderIn.parameters/arg0[$item]/singleUnitPrice</to>
+                                    </copy>
+                                    <copy>
+                                        <from>$Start_processIn.part1/ns0:order[$i]/ns0:item[$item]/@productID
+                                        </from>
+                                        <to>$PlaceOrderIn.parameters/arg0[$item]/@id</to>
+                                    </copy>
+                                </assign>
                             </sequence>
                         </scope>
                     </forEach>
                     <if name="If1">
                         <condition>$allAvailable</condition>
                         <sequence name="Sequence4">
-                            <assign name="Assign7">
+                            <assign name="assingCustomer">
                                 <copy>
                                     <from>$GetCustomerOut.parameters/return</from>
                                     <to>$PlaceOrderIn.parameters/arg1</to>
                                 </copy>
                             </assign>
-                            <invoke name="Invoke4" partnerLink="OrderManagement" operation="placeOrder" portType="ns1:IOrderManagementService" inputVariable="PlaceOrderIn" outputVariable="PlaceOrderOut"></invoke>
-                            <assign name="Assign6">
+                            <invoke name="placeOrder" partnerLink="OrderManagement" operation="placeOrder" portType="ns1:IOrderManagementService" inputVariable="PlaceOrderIn" outputVariable="PlaceOrderOut"></invoke>
+                            <assign name="assignOutput">
                                 <copy>
                                     <from>$PlaceOrderOut.parameters/return/@id</from>
                                     <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:orderID</to>
@@ -177,12 +183,18 @@
                                     </to>
                                 </copy>
                             </assign>
+                            <assign name="clearItems">
+                                <copy>
+                                    <from>'false'</from>
+                                    <to>$PlaceOrderIn.parameters/arg0</to>
+                                </copy>
+                            </assign>
                         </sequence>
                         <else>
                             <assign name="Assign8">
                                 <copy>
                                     <from variable="allAvailable"/>
-                                    <to>$Start_processOut.part1/ns0:placed_order/ns0:success</to>
+                                    <to>$Start_processOut.part1/ns0:placed_order[$i]/ns0:success</to>
                                 </copy>
                             </assign>
                         </else>
@@ -193,6 +205,14 @@
         <reply name="Reply1" partnerLink="PartnerLink1" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/ait09/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
+
+
+
+
+
+
 
 
 

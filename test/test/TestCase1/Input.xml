@@ -2,22 +2,8 @@
 <soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ord="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema">
     <soapenv:Body>
         <ord:parameters>
-            <ord:order customerID="100">
-                <ord:item productID="item1">
-                    <ord:quantity>3</ord:quantity>
-                <!-- single unit price can be ignored, if not necessary for ordering -->
-                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
-                </ord:item>
-                <ord:item productID="item2">
-                    <ord:quantity>4</ord:quantity>
-                    <ord:singleUnitPrice>10.00</ord:singleUnitPrice>
-                </ord:item>
-                <!--<ord:item productID="item3">
-                    <ord:quantity>10</ord:quantity>
-                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
-                </ord:item>-->
-            </ord:order>
-            <ord:order customerID="2">
+        <!-- standard order (several different items) -->
+            <ord:order customerID="1">
                 <ord:item productID="item1">
                     <ord:quantity>3</ord:quantity>
                 <!-- single unit price can be ignored, if not necessary for ordering -->
@@ -27,10 +13,38 @@
                     <ord:quantity>1</ord:quantity>
                     <ord:singleUnitPrice>10.00</ord:singleUnitPrice>
                 </ord:item>
-                <!--<ord:item productID="item3">
-                    <ord:quantity>10</ord:quantity>
+                <ord:item productID="item3">
+                    <ord:quantity>1</ord:quantity>
                     <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
-                </ord:item>-->
+                </ord:item>
+            </ord:order>
+            <!-- invalid order (unknown customer) -->
+            <ord:order customerID="unknown_customer666">
+                <ord:item productID="item1">
+                    <ord:quantity>1</ord:quantity>
+                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+                </ord:item>
+            </ord:order>
+        <!-- invalid order (unknown item) -->
+            <ord:order customerID="2">
+                <ord:item productID="unknown_item666">
+                    <ord:quantity>1</ord:quantity>
+                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+                </ord:item>
+            </ord:order>
+        <!-- invalid order (item not available) -->
+            <ord:order customerID="2">
+                <ord:item productID="item2">
+                    <ord:quantity>100</ord:quantity>
+                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+                </ord:item>
+            </ord:order>
+        <!-- another order (only one item) -->
+            <ord:order customerID="3">
+                <ord:item productID="item1">
+                    <ord:quantity>1</ord:quantity>
+                    <ord:singleUnitPrice>1.00</ord:singleUnitPrice>
+                </ord:item>
             </ord:order>
         </ord:parameters>
     </soapenv:Body>

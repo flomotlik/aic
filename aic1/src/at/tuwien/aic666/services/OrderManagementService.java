@@ -31,23 +31,23 @@ public class OrderManagementService implements IOrderManagementService {
         Integer quantity = this.db.getAvailableItemsList().get(item.getProductId());
 
         if (quantity == null) {
-            System.out.println("Item Not Available");
-            return false;
+            throw new ItemUnavailableFault("Item with id " + item.getProductId() + " is unknown");
         }
 
-        System.out.println("DBQuantity: " + quantity + "\nQnt: " + item.getQuantity());
+        //System.out.println("DBQuantity: " + quantity + "\nQnt: " + item.getQuantity());
         System.out.println("Available: " + (quantity >= item.getQuantity()));
         return quantity >= item.getQuantity();
     }
 
     public Order placeOrder(Item[] items, Customer customer) {
         Order order = new Order();
-
         order.setCustomer(customer);
         order.setId("order" + OrderManagementService.counter++);
         order.setOrderDate(new Date());
+        System.out.println("Placing a new order...");
 
         //check whether all items are available...
+        System.out.println("checking items in order...");
         Item item = this.checkItemsAvailability(items);
         if (item != null) {
             //Does a Soap Fault break the method like an exception or continues...?
@@ -55,6 +55,9 @@ public class OrderManagementService implements IOrderManagementService {
         }
 
         for (Item i : items) {
+                System.out.println("Called from order:" + order.getId());
+                System.out.println("item: " + i.getProductId());
+                System.out.println("Customer: " + customer.getId());
             if (i.getQuantity() <= this.db.getAvailableItemsList().get(i.getProductId())) {
                 this.db.decreaseItemsAvailable(i, i.getQuantity());
                 this.db.addShippingItem(i);
@@ -62,6 +65,7 @@ public class OrderManagementService implements IOrderManagementService {
             }
         }
 
+        System.out.println("A new order with id: '" + order.getId() + "' placed.");
         return order;
     }
 
@@ -104,11 +108,15 @@ public class OrderManagementService implements IOrderManagementService {
 
         Item item1 = new Item();
         Item item2 = new Item();
+        Item item3 = new Item();
+
         item1.setProductId("item1");
         item2.setProductId("item2");
+        item3.setProductId("item3");
 
         this.db.increaseItemsAvailable(item1, 105);
         this.db.increaseItemsAvailable(item2, 3);
+        this.db.increaseItemsAvailable(item3, 100);
         this.db.setCustomers(customers);
 
 

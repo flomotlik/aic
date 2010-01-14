@@ -5,8 +5,20 @@
   <SOAP-ENV:Body>
     <result xmlns="http://infosys.tuwien.ac.at/ait09/ass2/OrderProcessSchema" xmlns:msgns="http://infosys.tuwien.ac.at/ait09/ass2/process">
       <placed_order>
+        <success>true</success>
+        <orderID>order0</orderID>
+      </placed_order>
+      <placed_order>
         <success>false</success>
-        <info>Item with id item1 is not available</info>
+        <info>UnknowCustomerFault: unknown_customer666</info>
+      </placed_order>
+      <placed_order>
+        <success>false</success>
+        <info>Unknown Item: unknown_item666</info>
+      </placed_order>
+      <placed_order>
+        <success>false</success>
+        <info>Item with id item2 is not available</info>
       </placed_order>
       <placed_order>
         <success>true</success>
