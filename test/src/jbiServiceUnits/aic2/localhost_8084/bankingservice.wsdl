@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="BankingService" targetNamespace="http://services.aic666.tuwien.at/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.aic666.tuwien.at/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://services.aic666.tuwien.at/" version="1.0" xmlns:tns="http://services.aic666.tuwien.at/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="chargeCreditCard" type="tns:chargeCreditCard" />
+<xs:element name="chargeCreditCardResponse" type="tns:chargeCreditCardResponse" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="doBankTransfer" type="tns:doBankTransfer" />
+<xs:element name="doBankTransferResponse" type="tns:doBankTransferResponse" />
+<xs:element name="payment-preference" type="tns:paymentPreference" />
+<xs:complexType name="doBankTransfer">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:customer" />
+<xs:element minOccurs="0" name="arg1" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="preference" type="tns:paymentPreference" />
+<xs:element minOccurs="0" name="address" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" />
+</xs:complexType>
+<xs:complexType name="doBankTransferResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:complexType name="chargeCreditCard">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:customer" />
+<xs:element minOccurs="0" name="arg1" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="chargeCreditCardResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:simpleType name="paymentPreference">
+<xs:restriction base="xs:string">
+<xs:enumeration value="credit-card" />
+<xs:enumeration value="bank-transfer" />
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="chargeCreditCardResponse">
+    <wsdl:part element="tns:chargeCreditCardResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="chargeCreditCard">
+    <wsdl:part element="tns:chargeCreditCard" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="doBankTransfer">
+    <wsdl:part element="tns:doBankTransfer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="doBankTransferResponse">
+    <wsdl:part element="tns:doBankTransferResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IBankingService">
+    <wsdl:operation name="doBankTransfer">
+      <wsdl:input message="tns:doBankTransfer" name="doBankTransfer">
+    </wsdl:input>
+      <wsdl:output message="tns:doBankTransferResponse" name="doBankTransferResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="chargeCreditCard">
+      <wsdl:input message="tns:chargeCreditCard" name="chargeCreditCard">
+    </wsdl:input>
+      <wsdl:output message="tns:chargeCreditCardResponse" name="chargeCreditCardResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BankingServiceSoapBinding" type="tns:IBankingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="doBankTransfer">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="doBankTransfer">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="doBankTransferResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="chargeCreditCard">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="chargeCreditCard">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="chargeCreditCardResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BankingService">
+    <wsdl:port binding="tns:BankingServiceSoapBinding" name="BankingServicePort">
+      <soap:address location="http://localhost:8084/bankingservice" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

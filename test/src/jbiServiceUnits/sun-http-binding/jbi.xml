@@ -4,6 +4,7 @@
         <provides endpoint-name="CustomerManagementServiceSoapPort" interface-name="ns2:CustomerManagementSoap" service-name="ns2:CustomerManagementServiceSoap"/>
         <provides endpoint-name="OrderManagementServicePort" interface-name="ns2:IOrderManagementService" service-name="ns2:OrderManagementService"/>
         <provides endpoint-name="NotificationPT" interface-name="ns2:INotify" service-name="ns3:NotificationService"/>
+        <provides endpoint-name="BankingServicePort" interface-name="ns2:IBankingService" service-name="ns2:BankingService"/>
         <consumes endpoint-name="OrderProcessPort" interface-name="ns4:OrderProcessPortType" service-name="ns4:OrderProcessService"/>
     </services>
 </jbi>

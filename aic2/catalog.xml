@@ -4,12 +4,19 @@
     <system systemId="file:/Users/peter/Documents/TU/SEIC/2.Sem/AIC/Assignment2/OrderProcess.xsd" uri="src/OrderProcess.xsd"/>
     <system systemId="http://localhost:8086/customersoap?wsdl" uri="src/localhost_8086/customersoap.wsdl"/>
     <system systemId="http://localhost:8083/orderservice?wsdl" uri="src/localhost_8083/orderservice.wsdl"/>
+    <system systemId="http://localhost:8088/smsservice?wsdl" uri="src/localhost_8088/smsservice.wsdl"/>
+    <system systemId="http://localhost:8088/smsservice?wsdl=INotify.wsdl" uri="src/localhost_8088/smsservice.wsdl_INotify.wsdl"/>
+    <system systemId="http://localhost:8084/bankingservice?wsdl" uri="src/localhost_8084/bankingservice.wsdl"/>
     <system systemId="http://localhost:8089/mailservice?wsdl" uri="src/localhost_8089/mailservice.wsdl"/>
     <system systemId="http://localhost:8089/mailservice?wsdl=INotify.wsdl" uri="src/localhost_8089/mailservice.wsdl_INotify.wsdl"/>
     <nextCatalog catalog="nbproject/private/cache/retriever/catalog.xml"/>
-    <system systemId="http://localhost:8088/smsservice?wsdl" uri="src/localhost_8088/smsservice.wsdl"/>
-    <system systemId="http://localhost:8088/smsservice?wsdl=INotify.wsdl" uri="src/localhost_8088/smsservice.wsdl_INotify.wsdl"/>
 </catalog>
+
+
+
+
+
+
 
 
 

@@ -47,7 +47,6 @@ public class OrderManagementService implements IOrderManagementService {
         System.out.println("Placing a new order...");
 
         //check whether all items are available...
-        System.out.println("checking items in order...");
         Item item = this.checkItemsAvailability(items);
         if (item != null) {
             //Does a Soap Fault break the method like an exception or continues...?
@@ -55,9 +54,6 @@ public class OrderManagementService implements IOrderManagementService {
         }
 
         for (Item i : items) {
-                System.out.println("Called from order:" + order.getId());
-                System.out.println("item: " + i.getProductId());
-                System.out.println("Customer: " + customer.getId());
             if (i.getQuantity() <= this.db.getAvailableItemsList().get(i.getProductId())) {
                 this.db.decreaseItemsAvailable(i, i.getQuantity());
                 this.db.addShippingItem(i);
@@ -66,6 +62,7 @@ public class OrderManagementService implements IOrderManagementService {
         }
 
         System.out.println("A new order with id: '" + order.getId() + "' placed.");
+        this.db.saveOrder(order);
         return order;
     }
 
@@ -76,6 +73,7 @@ public class OrderManagementService implements IOrderManagementService {
             finished = true;
         }
 
+         System.out.println("IsFinished " + order.getId() + ": " + finished);
         return finished;
     }
 
@@ -96,9 +94,9 @@ public class OrderManagementService implements IOrderManagementService {
         cust2.setAddress(add2);
 
         Customer cust3 = new Customer("3");
-        cust2.setName("John 3");
-        cust2.setPreference(PaymentPreference.CREDIT_CARD);
-        cust2.setAddress(add2);
+        cust3.setName("John 3");
+        cust3.setPreference(PaymentPreference.CREDIT_CARD);
+        cust3.setAddress(add2);
 
         Map<String, Customer> customers = new HashMap<String, Customer>();
         customers.put("1", cust1);
@@ -138,25 +136,30 @@ public class OrderManagementService implements IOrderManagementService {
     }
 
     private boolean checkItems(Order order) {
+        final Order tmp = this.db.getOrderById(order.getId());
 
-        for (Item i : order.getItems()) {
-            boolean item = false;
-            for (Item shipped : db.getShippedList()) {
-                if (shipped.getProductId().equals(i.getProductId())) {
-                    item = true;
-                    break;
+        if (tmp != null) {
+            for (Item i : tmp.getItems()) {
+                boolean item = false;
+                for (Item shipped : db.getShippedList()) {
+                    if (shipped.getProductId().equals(i.getProductId())) {
+                        item = true;
+                        break;
+                    }
                 }
+
+                if (item) {
+                    continue;
+                } else {
+                    return false;
+                }
+
             }
 
-            if (item) {
-                continue;
-            } else {
-                return false;
-            }
-
+            return true;
         }
 
-        return true;
+        return false;
 
     }
 }

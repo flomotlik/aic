@@ -2,6 +2,7 @@ package at.tuwien.aic666.persistence;
 
 import at.tuwien.aic666.datamodel.Customer;
 import at.tuwien.aic666.datamodel.Item;
+import at.tuwien.aic666.datamodel.Order;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class DataBaseMock {
     private Map<String, Integer> availableItems;
     private Collection<Item> shippingList;
     private Collection<Item> shippedList;
+    private Collection<Order> successfulOrders;
     private static DataBaseMock uniqueInstance;
 
     /**
@@ -41,6 +43,7 @@ public class DataBaseMock {
         this.availableItems = new HashMap<String, Integer>();
         this.shippedList = new ArrayList<Item>();
         this.shippingList = new ArrayList<Item>();
+        this.successfulOrders = new ArrayList<Order>();
         this.shippingTimer = new Timer();
     }
 
@@ -72,6 +75,14 @@ public class DataBaseMock {
         return shippingList;
     }
 
+    public synchronized Collection<Order> getOrders() {
+        return this.successfulOrders;
+    }
+
+    public synchronized void saveOrder(final Order order) {
+        this.successfulOrders.add(order);
+    }
+
     public synchronized void setShippingList(Collection<Item> shippingList) {
         this.shippingList = shippingList;
     }
@@ -91,6 +102,16 @@ public class DataBaseMock {
 
     public synchronized boolean removeCustomerById(final String id) {
         return this.customers.remove(id) != null;
+    }
+
+    public synchronized Order getOrderById(final String id) {
+        for (Order o : this.getOrders())  {
+            if (o.getId().equals(id)) {
+                return o;
+            }
+        }
+
+        return null;
     }
 
     public synchronized void increaseItemsAvailable(final Item item, final int increase) {
@@ -136,7 +157,7 @@ public class DataBaseMock {
                 shippingList.remove(item);
                 addShippedItem(item);
                 System.out.println("SHIPPED " + item.getProductId());
-            }}, 3000); // move item in 3 seconds
+            }}, 10000); // move item in 10 seconds
         return toReturn;
     }
 

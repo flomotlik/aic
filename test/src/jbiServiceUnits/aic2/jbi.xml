@@ -21,5 +21,10 @@
             <ns3:process-name>aic2</ns3:process-name>
             <ns3:file-path>orderProcess.bpel</ns3:file-path>
         </consumes>
+        <consumes endpoint-name="IBankingServiceRole_partnerRole" interface-name="ns1:IBankingService" service-name="ns0:PartnerLink3">
+            <ns3:display-name>PartnerLink3</ns3:display-name>
+            <ns3:process-name>aic2</ns3:process-name>
+            <ns3:file-path>orderProcess.bpel</ns3:file-path>
+        </consumes>
     </services>
 </jbi>

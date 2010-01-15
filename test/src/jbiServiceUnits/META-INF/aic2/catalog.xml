@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8089/mailservice?wsdl=" uri="src/_references/_cache/localhost_8089/mailservice.wsdl_.wsdl"/>
 </catalog>
